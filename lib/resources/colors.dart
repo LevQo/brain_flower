@@ -15,7 +15,7 @@ class CustomColors {
     Colors.pink,
     Colors.lightBlue,
     Colors.orange,
-    Colors.tealAccent
+    Colors.black54
   ];
 
   static const Color defaultShadowColor = Color(0x1A111649);

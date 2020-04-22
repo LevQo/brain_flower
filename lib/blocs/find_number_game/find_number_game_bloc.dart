@@ -5,6 +5,7 @@ import 'package:brain_flower/blocs/find_number_game/find_number_game_state.dart'
 import 'package:brain_flower/data/find_number_game/FindNumberModel.dart';
 import 'package:brain_flower/data/find_number_game/number_types_find_numbers.dart';
 import 'package:brain_flower/resources/colors.dart';
+import 'package:brain_flower/resources/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FindNumberGameBloc
@@ -24,34 +25,75 @@ class FindNumberGameBloc
     }
   }
 
-  Stream<GeneratedNumbersFindNumber> _mapToStartScreen() async* {
+  Stream<GeneratedNumbersFindNumberState> _mapToStartScreen() async* {
     var numbers = _generateNumbers();
 
-    yield GeneratedNumbersFindNumber(
-        numbers: numbers, score: 0, isCorrectAnswer: null);
+    var random = Random();
+    var indexNumberToSearch = random.nextInt(numbers.length);
+    var numberToSearch = numbers[indexNumberToSearch].number;
+
+
+    yield GeneratedNumbersFindNumberState(
+        numberToSearch: numberToSearch,
+        numbers: numbers,
+        scores: 0,
+        isCorrectAnswer: null);
   }
 
-  Stream<GeneratedNumbersFindNumber> _mapToGeneratedNumbersState(
+  Stream<GeneratedNumbersFindNumberState> _mapToGeneratedNumbersState(
       SelectNumberFindNumberEvent event) async* {
     var currentState = state;
+    var random = Random();
 
-    var numbers = _generateNumbers();
+    var isCorrectAnswer = true;
     var scores = 0;
 
+    if (currentState is GeneratedNumbersFindNumberState) {
+      isCorrectAnswer = event.number == currentState.numberToSearch;
+      if (isCorrectAnswer) {
+        scores = currentState.scores + Constants.defaultScoresForAnswer;
+      } else {
+        if (scores > 0) {
+          scores = currentState.scores - Constants.defaultScoresForAnswer;
+        }
+      }
+    }
 
-    yield GeneratedNumbersFindNumber();
+    var numbers = _generateNumbers();
+
+    var indexNumberToSearch = random.nextInt(numbers.length);
+    var numberToSearch = numbers[indexNumberToSearch].number;
+
+    yield GeneratedNumbersFindNumberState(
+        numberToSearch: numberToSearch,
+        numbers: numbers,
+        scores: scores,
+        isCorrectAnswer: isCorrectAnswer);
+  }
+
+  int _generateNumberToSearch() {
+    var random = Random();
+    return random.nextInt(999);
   }
 
   List<FindNumberModel> _generateNumbers() {
     var random = Random();
-    List<FindNumberModel> resultNumbers;
+    List<FindNumberModel> resultNumbers = [];
+    List<int> numbersInt = [];
 
-    for (int i; i < 10; i++) {
-      var color = CustomColors.arrayColors[random.nextInt(10)];
+    for (int i = 0; i < 10; i++) {
+      var colorsCount = CustomColors.arrayColors.length;
+      var color = CustomColors.arrayColors[random.nextInt(colorsCount)];
 
-      var number = random.nextInt(100);
+      var number = random.nextInt(1000);
 
-      var typeInt = random.nextInt(7);
+      while(numbersInt.contains(number)){
+        number = random.nextInt(1000);
+      }
+
+      numbersInt.add(number);
+
+      var typeInt = random.nextInt(8);
       var type;
 
       switch (typeInt) {

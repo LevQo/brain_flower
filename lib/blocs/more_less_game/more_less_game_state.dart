@@ -11,12 +11,12 @@ class InitialStateMoreLess extends MoreLessGameState {
 class GeneratedNumbersMoreLessState extends MoreLessGameState {
   final String firstNumber;
   final String secondNumber;
-  final int score;
+  final int scores;
   final bool isCorrectAnswer;
 
   const GeneratedNumbersMoreLessState(
       {@required this.firstNumber,
       @required this.secondNumber,
-      this.score,
+      this.scores,
       this.isCorrectAnswer});
 }

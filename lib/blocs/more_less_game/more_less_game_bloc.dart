@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:brain_flower/blocs/more_less_game/more_less_game_event.dart';
 import 'package:brain_flower/blocs/more_less_game/more_less_game_state.dart';
 import 'package:brain_flower/data/more_less_game/answer_types_more_less.dart';
+import 'package:brain_flower/resources/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
@@ -29,7 +30,7 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
     yield GeneratedNumbersMoreLessState(
         firstNumber: firstNumber,
         secondNumber: secondNumber,
-        score: 0,
+        scores: 0,
         isCorrectAnswer: null);
   }
 
@@ -45,11 +46,11 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
     if (currentState is GeneratedNumbersMoreLessState) {
       isCorrectAnswer = _checkAnswer(currentState, event);
       if (isCorrectAnswer) {
-        score = currentState.score + 50;
+        score = currentState.scores + Constants.defaultScoresForAnswer;
         _correctAnswerCounter++;
       } else {
-        if(currentState.score > 0) {
-          score = currentState.score - 50;
+        if(currentState.scores > 0) {
+          score = currentState.scores - Constants.defaultScoresForAnswer;
         }
         _correctAnswerCounter--;
       }
@@ -61,7 +62,7 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
     yield GeneratedNumbersMoreLessState(
         firstNumber: firstNumber,
         secondNumber: secondNumber,
-        score: score,
+        scores: score,
         isCorrectAnswer: isCorrectAnswer);
   }
 
@@ -105,32 +106,8 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
 
   bool _checkAnswer(
       GeneratedNumbersMoreLessState currentState, SelectAnswerMoreLessEvent event) {
-    double firstNumber;
-    double secondNumber;
-
-    if (currentState.firstNumber.contains('-')) {
-      var numbersFirst = currentState.firstNumber.split(' - ');
-      firstNumber =
-          double.parse(numbersFirst[0]) - double.parse(numbersFirst[1]);
-    } else if (currentState.firstNumber.contains('+')) {
-      var numbersFirst = currentState.firstNumber.split(' + ');
-      firstNumber =
-          double.parse(numbersFirst[0]) + double.parse(numbersFirst[1]);
-    } else {
-      firstNumber = double.parse(currentState.firstNumber);
-    }
-
-    if (currentState.secondNumber.contains('-')) {
-      var numbersSecond = currentState.secondNumber.split(' - ');
-      secondNumber =
-          double.parse(numbersSecond[0]) - double.parse(numbersSecond[1]);
-    } else if (currentState.secondNumber.contains('+')) {
-      var numbersSecond = currentState.secondNumber.split(' + ');
-      secondNumber =
-          double.parse(numbersSecond[0]) + double.parse(numbersSecond[1]);
-    } else {
-      secondNumber = double.parse(currentState.secondNumber);
-    }
+    double firstNumber = _formatNumber(currentState.firstNumber);
+    double secondNumber = _formatNumber(currentState.secondNumber);
 
     if (event.answerType == AnswerTypesMoreLess.firstNumber) {
       return firstNumber > secondNumber;
@@ -142,4 +119,24 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
       return false;
     }
   }
+
+  double _formatNumber(String numberString){
+    var number;
+
+    if (numberString.contains('-')) {
+      var numbersFirst = numberString.split(' - ');
+      number =
+          double.parse(numbersFirst[0]) - double.parse(numbersFirst[1]);
+    } else if (numberString.contains('+')) {
+      var numbersFirst = numberString.split(' + ');
+      number =
+          double.parse(numbersFirst[0]) + double.parse(numbersFirst[1]);
+    } else {
+      number = double.parse(numberString);
+    }
+
+    return number;
+  }
+
+
 }

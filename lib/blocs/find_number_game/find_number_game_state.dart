@@ -9,11 +9,15 @@ class InitialStateFindNumber extends FindNumberGameState {
   const InitialStateFindNumber();
 }
 
-class GeneratedNumbersFindNumber extends FindNumberGameState {
+class GeneratedNumbersFindNumberState extends FindNumberGameState {
+  final int numberToSearch;
   final List<FindNumberModel> numbers;
-  final int score;
+  final int scores;
   final bool isCorrectAnswer;
 
-  GeneratedNumbersFindNumber(
-      {@required this.numbers, this.score, this.isCorrectAnswer});
+  GeneratedNumbersFindNumberState(
+      {@required this.numberToSearch,
+      @required this.numbers,
+      this.scores,
+      this.isCorrectAnswer});
 }

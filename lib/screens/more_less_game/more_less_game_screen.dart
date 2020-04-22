@@ -49,7 +49,7 @@ class MoreLessGameScreen extends StatelessWidget {
           right: MediaQuery.of(context).size.width * 0.07,
           left: MediaQuery.of(context).size.width * 0.07,
           top: MediaQuery.of(context).size.height * 0.07,
-          child: CustomAppBar(score: state.score.toString(),)
+          child: CustomAppBar(score: state.scores.toString(),)
         ),
         Positioned(
           right: -MediaQuery.of(context).size.width * 0.07,
@@ -58,7 +58,7 @@ class MoreLessGameScreen extends StatelessWidget {
             isRestart: state.isCorrectAnswer != null ? false : true,
             finishTimerListener: () => _showDialog(
               context,
-              state.score,
+              state.scores,
             ),
           ),
         ),
@@ -99,8 +99,8 @@ class MoreLessGameScreen extends StatelessWidget {
         context: buildContext,
         builder: (context) {
           return AlertDialog(
-            title: new Text("Я ебал такое палево"),
-            content: new Text("У ты буря ебаная, ты набрал $score очков"),
+            title: new Text(""),
+            content: new Text("Ты набрал $score очков"),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
               new FlatButton(
