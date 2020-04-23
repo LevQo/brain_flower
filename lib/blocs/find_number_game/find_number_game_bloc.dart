@@ -26,12 +26,11 @@ class FindNumberGameBloc
   }
 
   Stream<GeneratedNumbersFindNumberState> _mapToStartScreen() async* {
-    var numbers = _generateNumbers();
+    var numbers = await _generateNumbers();
 
     var random = Random();
     var indexNumberToSearch = random.nextInt(numbers.length);
     var numberToSearch = numbers[indexNumberToSearch].number;
-
 
     yield GeneratedNumbersFindNumberState(
         numberToSearch: numberToSearch,
@@ -52,14 +51,16 @@ class FindNumberGameBloc
       isCorrectAnswer = event.number == currentState.numberToSearch;
       if (isCorrectAnswer) {
         scores = currentState.scores + Constants.defaultScoresForAnswer;
+        _correctAnswerCounter++;
       } else {
-        if (scores > 0) {
+        if (scores > 0 || _correctAnswerCounter > 0) {
           scores = currentState.scores - Constants.defaultScoresForAnswer;
+          _correctAnswerCounter--;
         }
       }
     }
 
-    var numbers = _generateNumbers();
+    var numbers = await _generateNumbers();
 
     var indexNumberToSearch = random.nextInt(numbers.length);
     var numberToSearch = numbers[indexNumberToSearch].number;
@@ -71,29 +72,55 @@ class FindNumberGameBloc
         isCorrectAnswer: isCorrectAnswer);
   }
 
-  int _generateNumberToSearch() {
-    var random = Random();
-    return random.nextInt(999);
-  }
-
-  List<FindNumberModel> _generateNumbers() {
+  Future<List<FindNumberModel>> _generateNumbers() async {
     var random = Random();
     List<FindNumberModel> resultNumbers = [];
     List<int> numbersInt = [];
 
-    for (int i = 0; i < 10; i++) {
+    var countNumbers = 1;
+    var maxNumber = 1;
+    var countNumberTypes = 7;
+
+    if(_correctAnswerCounter < 2){
+      countNumbers = 3;
+      maxNumber = 100;
+      countNumberTypes = 1;
+    } else if(_correctAnswerCounter < 5){
+      countNumbers = 6;
+      maxNumber = 500;
+      countNumberTypes = 2;
+    } else if(_correctAnswerCounter < 7){
+      countNumbers = 9;
+      maxNumber = 1000;
+      countNumberTypes = 4;
+    } else if(_correctAnswerCounter < 10){
+      countNumbers = 12;
+      maxNumber = 1500;
+      countNumberTypes = 5;
+    } else if(_correctAnswerCounter < 13){
+      countNumbers = 15;
+      maxNumber = 2500;
+    } else if(_correctAnswerCounter < 15){
+      countNumbers = 18;
+      maxNumber = 5000;
+    } else {
+      countNumbers = 21;
+      maxNumber = 10000;
+    }
+
+    for (int i = 0; i < countNumbers; i++) {
       var colorsCount = CustomColors.arrayColors.length;
       var color = CustomColors.arrayColors[random.nextInt(colorsCount)];
 
-      var number = random.nextInt(1000);
+      var number = random.nextInt(maxNumber);
 
-      while(numbersInt.contains(number)){
-        number = random.nextInt(1000);
+      while (numbersInt.contains(number)) {
+        number = random.nextInt(maxNumber);
       }
 
       numbersInt.add(number);
 
-      var typeInt = random.nextInt(8);
+      var typeInt = random.nextInt(countNumberTypes);
       var type;
 
       switch (typeInt) {
@@ -101,24 +128,21 @@ class FindNumberGameBloc
           type = NumberTypesFindNumbers.DEFAULT;
           break;
         case 1:
-          type = NumberTypesFindNumbers.ROTATE;
-          break;
-        case 2:
           type = NumberTypesFindNumbers.SCALE;
           break;
-        case 3:
+        case 2:
           type = NumberTypesFindNumbers.VERTICAL_TRANSLATE;
           break;
-        case 4:
+        case 3:
           type = NumberTypesFindNumbers.HORIZONTAL_TRANSLATE;
           break;
-        case 5:
+        case 4:
           type = NumberTypesFindNumbers.HALF_ROTATE;
           break;
-        case 6:
+        case 5:
           type = NumberTypesFindNumbers.COLORFUL;
           break;
-        case 7:
+        case 6:
           type = NumberTypesFindNumbers.OPACITY;
           break;
         default:

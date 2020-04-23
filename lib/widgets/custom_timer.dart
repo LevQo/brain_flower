@@ -41,6 +41,12 @@ class _CustomTimerState extends State<CustomTimer>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(CustomTimer oldWidget) {
     if (widget.isRestart) {
       _controller.value = 60;

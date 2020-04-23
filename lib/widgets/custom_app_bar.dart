@@ -11,16 +11,17 @@ class CustomAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Icon(
-          Icons.arrow_back_ios,
-          color: Colors.white,
+        GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
         ),
         Text(
           score,
           style: TextStyle(
-              fontSize: 24.0,
-              color: Colors.white,
-              fontWeight: FontWeight.bold),
+              fontSize: 24.0, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         Icon(
           Icons.pause,

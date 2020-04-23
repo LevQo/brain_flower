@@ -17,20 +17,26 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    _initAnimation();
     super.initState();
   }
 
   @override
   void didUpdateWidget(TitleText oldWidget) {
+    _initAnimation();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _initAnimation() {
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
 
     if (widget.isCorrectAnswer != null) {
       if (widget.isCorrectAnswer) {
         _colorTween = ColorTween(begin: Colors.green[400], end: Colors.white)
             .animate(_animationController);
       } else {
-        _colorTween = ColorTween(begin: Colors.red[300], end: Colors.white)
+        _colorTween = ColorTween(begin: Colors.red, end: Colors.white)
             .animate(_animationController);
       }
     }
@@ -39,8 +45,6 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
     _animationController.addListener(() {
       setState(() {});
     });
-
-    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -62,15 +66,25 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
   }
 
   Widget _buildText(bool isDefaultColor) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.60,
-      child: AutoSizeText(
-        widget.text,
-        maxLines: 1,
-        style: TextStyle(
-            color: !isDefaultColor ? _colorTween.value : Colors.white,
-            fontSize: 24.0),
-      ),
+    return Column(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width * 0.6,
+          child: AutoSizeText(
+            widget.text,
+            maxLines: 1,
+            style: TextStyle(
+                color: !isDefaultColor ? _colorTween.value : Colors.white,
+                fontSize: 24.0),
+          ),
+        ),
+        SizedBox(height: 8.0,),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: 1.0,
+          color: Colors.white,
+        )
+      ],
     );
   }
 }
