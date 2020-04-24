@@ -78,12 +78,12 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
                 fontSize: 24.0),
           ),
         ),
-        SizedBox(height: 8.0,),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: 1.0,
-          color: Colors.white,
-        )
+//        SizedBox(height: 8.0,),
+//        Container(
+//          width: MediaQuery.of(context).size.width * 0.8,
+//          height: 1.0,
+//          color: Colors.white,
+//        )
       ],
     );
   }
