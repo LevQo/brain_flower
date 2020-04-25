@@ -72,6 +72,7 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
           width: MediaQuery.of(context).size.width * 0.6,
           child: AutoSizeText(
             widget.text,
+            textAlign: TextAlign.center,
             maxLines: 1,
             style: TextStyle(
                 color: !isDefaultColor ? _colorTween.value : Colors.white,

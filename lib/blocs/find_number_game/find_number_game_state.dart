@@ -1,4 +1,4 @@
-import 'package:brain_flower/data/find_number_game/FindNumberModel.dart';
+import 'package:brain_flower/data/find_number_game/find_number_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class FindNumberGameState {

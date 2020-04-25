@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:brain_flower/blocs/find_number_game/find_number_game_event.dart';
 import 'package:brain_flower/blocs/find_number_game/find_number_game_state.dart';
-import 'package:brain_flower/data/find_number_game/FindNumberModel.dart';
+import 'package:brain_flower/data/find_number_game/find_number_model.dart';
 import 'package:brain_flower/data/find_number_game/number_types_find_numbers.dart';
 import 'package:brain_flower/resources/colors.dart';
 import 'package:brain_flower/resources/constants.dart';
