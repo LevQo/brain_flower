@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class FindNumberGameBloc
     extends Bloc<FindNumberGameEvent, FindNumberGameState> {
   int _correctAnswerCounter = 0;
+  final _random = Random();
 
   @override
   FindNumberGameState get initialState => InitialStateFindNumber();
@@ -28,8 +29,8 @@ class FindNumberGameBloc
   Stream<GeneratedNumbersFindNumberState> _mapToStartScreen() async* {
     var numbers = await _generateNumbers();
 
-    var random = Random();
-    var indexNumberToSearch = random.nextInt(numbers.length);
+
+    var indexNumberToSearch = _random.nextInt(numbers.length);
     var numberToSearch = numbers[indexNumberToSearch].number;
 
     yield GeneratedNumbersFindNumberState(

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         )
       ),
       home: FindNumberGameScreen(),
-      initialRoute: '/dominoes_game',
+      initialRoute: '/games',
       routes: {
         '/games': (context) => GamesScreen(),
         '/more_less_game': (context) => MoreLessGameScreen(),

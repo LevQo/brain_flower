@@ -13,12 +13,14 @@ class GeneratedDominoesState extends DominoesGameState {
   final List<bool> secondDominoDots;
   final List<List<bool>> dominoesForAnswer;
   final int correctAnswerPosition;
-  final int isCorrectAnswer;
+  final bool isCorrectAnswer;
+  final int scores;
 
   GeneratedDominoesState(
       {@required this.firstDominoDots,
       @required this.secondDominoDots,
       @required this.dominoesForAnswer,
       @required this.correctAnswerPosition,
-      @required this.isCorrectAnswer});
+      @required this.isCorrectAnswer,
+      @required this.scores});
 }

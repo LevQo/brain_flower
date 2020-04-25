@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
   int _correctAnswerCounter = 0;
+  final _random = Random();
 
   @override
   MoreLessGameState get initialState => InitialStateMoreLess();
@@ -67,24 +68,24 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
   }
 
   Future<String> _generateNumber() async {
-    final random = Random();
+
     String randomNumber = "";
 
     if (_correctAnswerCounter > 5) {
-      int gameType = random.nextInt(3); // 0 - DEFAULT, 1 - PLUS, 2 - MINUS
+      int gameType = _random.nextInt(3); // 0 - DEFAULT, 1 - PLUS, 2 - MINUS
 
       int firstNumber;
       int secondNumber;
 
       if (_correctAnswerCounter > 20) {
-        firstNumber = 1000 + random.nextInt(2000 - 100);
-        secondNumber = 100 + random.nextInt(2000 - 100);
+        firstNumber = 1000 + _random.nextInt(2000 - 100);
+        secondNumber = 100 + _random.nextInt(2000 - 100);
       } else if (_correctAnswerCounter > 10) {
-        firstNumber = 50 + random.nextInt(199 - 50);
-        secondNumber = 50 + random.nextInt(199 - 50);
+        firstNumber = 50 + _random.nextInt(199 - 50);
+        secondNumber = 50 + _random.nextInt(199 - 50);
       } else {
-        firstNumber = 10 + random.nextInt(99 - 10);
-        secondNumber = 10 + random.nextInt(99 - 10);
+        firstNumber = 10 + _random.nextInt(99 - 10);
+        secondNumber = 10 + _random.nextInt(99 - 10);
       }
 
       if (gameType == 2) {
@@ -95,10 +96,10 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
         randomNumber = "$firstNumber + $secondNumber";
       } else {
         //DEFAULT
-        randomNumber = (101 + random.nextInt(299 - 101)).toString();
+        randomNumber = (101 + _random.nextInt(299 - 101)).toString();
       }
     } else {
-      randomNumber = (101 + random.nextInt(299 - 101)).toString();
+      randomNumber = (101 + _random.nextInt(299 - 101)).toString();
     }
 
     return randomNumber;

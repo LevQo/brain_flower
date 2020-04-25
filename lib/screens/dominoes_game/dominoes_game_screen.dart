@@ -1,72 +1,44 @@
+import 'package:brain_flower/blocs/dominoes_game/dominoes_game_bloc.dart';
+import 'package:brain_flower/blocs/dominoes_game/dominoes_game_event.dart';
+import 'package:brain_flower/blocs/dominoes_game/dominoes_game_state.dart';
 import 'package:brain_flower/resources/colors.dart';
 import 'package:brain_flower/resources/drawables.dart';
 import 'package:brain_flower/widgets/custom_app_bar.dart';
 import 'package:brain_flower/widgets/custom_timer.dart';
 import 'package:brain_flower/widgets/title_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DominoesGameScreen extends StatelessWidget {
-  List<bool> domino1 = [];
-  List<bool> domino2 = [];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomColors.backgroundFindNumberColor,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(Drawables.backgroundMoreLess),
-              fit: BoxFit.cover),
+    return BlocProvider<DominoesGameBloc>(
+      create: (context) => DominoesGameBloc()..add(InitStartScreenDominoes()),
+      child: Scaffold(
+        backgroundColor: CustomColors.backgroundFindNumberColor,
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(Drawables.backgroundMoreLess),
+                fit: BoxFit.cover),
+          ),
+          child: BlocBuilder<DominoesGameBloc, DominoesGameState>(
+            builder: (context, state) {
+              if (state is GeneratedDominoesState) {
+                return _buildMainContainer(context, state);
+              } else {
+                return Container();
+              }
+            },
+          ),
         ),
-        child: _buildMainContainer(context),
       ),
     );
   }
 
-  Widget _buildMainContainer(BuildContext context) {
-    List<bool> dominoDotsStatus1 = [
-      true,
-      true,
-      true,
-      true,
-      false,
-      false,
-      true,
-      false,
-      true
-    ];
-
-    domino1 = dominoDotsStatus1;
-
-    List<Widget> dominoDots1 = [];
-
-    dominoDotsStatus1.forEach((isVisible) {
-      var dot = _buildDominoDot(context, isVisible);
-      dominoDots1.add(dot);
-    });
-
-    List<bool> dominoDotsStatus2 = [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ];
-
-    domino2 = dominoDotsStatus2;
-
-    List<Widget> dominoDots2 = [];
-
-    dominoDotsStatus2.forEach((isVisible) {
-      var dot = _buildDominoDot(context, isVisible);
-      dominoDots2.add(dot);
-    });
-
+  Widget _buildMainContainer(
+      BuildContext context, GeneratedDominoesState state) {
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
@@ -75,7 +47,7 @@ class DominoesGameScreen extends StatelessWidget {
             left: MediaQuery.of(context).size.width * 0.07,
             top: MediaQuery.of(context).size.height * 0.07,
             child: CustomAppBar(
-              score: '0',
+              score: state.scores.toString(),
             )),
         Positioned(
           right: -MediaQuery.of(context).size.width * 0.07,
@@ -92,38 +64,34 @@ class DominoesGameScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TitleText(text: 'Сложите домино', isCorrectAnswer: true),
+              TitleText(
+                  text: 'Наложите домино',
+                  isCorrectAnswer: state.isCorrectAnswer),
               SizedBox(height: 40.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildDominoContainer(context, dominoDots1),
+                  Domino(dots: state.firstDominoDots),
                   SizedBox(width: 30.0),
-                  GestureDetector(
-                    onTap: () => _checkAnswer(),
-                    child: Text(
-                      '+',
-                      style: TextStyle(color: Colors.white, fontSize: 36.0),
-                    ),
+                  Text(
+                    '=>',
+                    style: TextStyle(color: Colors.white, fontSize: 36.0),
                   ),
                   SizedBox(width: 30.0),
-                  buildDominoContainer(context, dominoDots2),
+                  Domino(dots: state.secondDominoDots),
                 ],
               ),
-              SizedBox(height: 30.0),
+              SizedBox(height: 40.0),
               Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 1.0,
               ),
-              SizedBox(height: 30.0),
+              SizedBox(height: 40.0),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildDominoContainer(context, dominoDots1),
-                  SizedBox(width: 30.0),
-                  buildDominoContainer(context, dominoDots2),
-                ],
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: _buildAnswersRow(context, state.dominoesForAnswer,
+                    state.correctAnswerPosition),
               ),
             ],
           ),
@@ -132,19 +100,29 @@ class DominoesGameScreen extends StatelessWidget {
     );
   }
 
-  _checkAnswer() {
-    List<bool> resultArray = [];
-
-    for (int i = 0; i < domino1.length; i++) {
-      bool isActive = domino1[i] != domino2[i];
-      resultArray.add(isActive);
+  List<Widget> _buildAnswersRow(BuildContext context, List<List<bool>> answers,
+      int correctAnswerPosition) {
+    final answerDominoes = <Widget>[];
+    for (int i = 0; i < answers.length; i++) {
+      var domino = GestureDetector(
+        onTap: () => context
+            .bloc<DominoesGameBloc>()
+            .add(SelectDominoEvent(i == correctAnswerPosition)),
+        child: Domino(dots: answers[i]),
+      );
+      answerDominoes.add(domino);
     }
-
-    print(resultArray);
+    return answerDominoes;
   }
+}
 
-  Container buildDominoContainer(
-      BuildContext context, List<Widget> dominoDots) {
+class Domino extends StatelessWidget {
+  final List<bool> dots;
+
+  const Domino({@required this.dots});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.2,
       height: MediaQuery.of(context).size.width * 0.2,
@@ -165,32 +143,30 @@ class DominoesGameScreen extends StatelessWidget {
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                dominoDots[0],
-                dominoDots[1],
-                dominoDots[2],
-              ],
+              children: _buildDotsRange(context, 0, 2),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                dominoDots[3],
-                dominoDots[4],
-                dominoDots[5],
-              ],
+              children: _buildDotsRange(context, 3, 5),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                dominoDots[6],
-                dominoDots[7],
-                dominoDots[8],
-              ],
+              children: _buildDotsRange(context, 6, 8),
             ),
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> _buildDotsRange(
+      BuildContext context, int startIndex, int endIndex) {
+    final dominoDots = <Widget>[];
+    for (int i = startIndex; i <= endIndex; i++) {
+      var dot = _buildDominoDot(context, dots[i]);
+      dominoDots.add(dot);
+    }
+    return dominoDots;
   }
 
   Container _buildDominoDot(BuildContext context, bool isVisible) {
