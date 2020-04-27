@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           })),
       home: FindNumberGameScreen(),
-      initialRoute: '/find_object_game',
+      initialRoute: '/games',
       routes: {
         '/games': (context) => GamesScreen(),
         '/more_less_game': (context) => MoreLessGameScreen(),

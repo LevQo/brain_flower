@@ -14,24 +14,28 @@ class FindObjectGameBloc
   FindObjectGameState get initialState => InitialStateFindObject();
 
   final _random = Random();
+  int _correctAnswerCounter = 0;
 
   @override
   Stream<FindObjectGameState> mapEventToState(
       FindObjectGameEvent event) async* {
     if (event is InitStartScreenFindObject) {
       yield* _mapToStartScreen();
-    } else if (event is SelectObjectEvent) {}
+    } else if (event is SelectObjectEvent) {
+      yield* _mapToGeneratedObjectsState(event);
+    }
   }
 
   Stream<GeneratedObjectsState> _mapToStartScreen() async* {
-    var objectToSearch = await _generateRandomObject();
-    var objects = await _generateRandomObjects(objectToSearch);
+    final objectToSearch = await _generateRandomObject();
+    final objects = await _generateRandomObjects(objectToSearch);
     var colorText;
 
     var typeOfSearch = _random.nextInt(2) == 0
         ? FindObjectGameTypes.TEXT
         : FindObjectGameTypes.COLOR;
 
+    //TODO MOVE TO GLOBAL CONST
     var colorsText = [
       'Зеленый',
       'Красный',
@@ -46,7 +50,7 @@ class FindObjectGameBloc
       'Серый',
     ];
 
-    if(typeOfSearch == FindObjectGameTypes.TEXT){
+    if (typeOfSearch == FindObjectGameTypes.TEXT) {
       var colorIndex = CustomColors.arrayColors.indexOf(objectToSearch.color);
       colorText = colorsText[colorIndex];
     } else {
@@ -61,6 +65,83 @@ class FindObjectGameBloc
         colorText: colorText,
         scores: 0,
         isCorrectAnswer: null);
+  }
+
+  Stream<GeneratedObjectsState> _mapToGeneratedObjectsState(
+      SelectObjectEvent event) async* {
+    FindObjectModel objectToSearch;
+    var objects = <FindObjectModel>[];
+    var colorText;
+    var scores = 0;
+    var isCorrectAnswer = true;
+    FindObjectGameTypes typeOfSearch;
+
+    var currentState = state;
+    if (currentState is GeneratedObjectsState) {
+      objectToSearch = await _generateRandomObject();
+      objects = await _generateRandomObjects(objectToSearch);
+
+      typeOfSearch = _random.nextInt(2) == 0
+          ? FindObjectGameTypes.TEXT
+          : FindObjectGameTypes.COLOR;
+
+      //TODO MOVE TO GLOBAL CONST
+      var colorsText = [
+        'Зеленый',
+        'Красный',
+        'Синий',
+        'Салатовый',
+        'Темно-фиолетовый',
+        'Фиолетовый',
+        'Бледно-зеленый',
+        'Розовый',
+        'Голубой',
+        'Оранжевый',
+        'Серый',
+      ];
+
+      if (typeOfSearch == FindObjectGameTypes.TEXT) {
+        var colorIndex = CustomColors.arrayColors.indexOf(objectToSearch.color);
+        colorText = colorsText[colorIndex];
+
+        if (event.object.icon == currentState.objectToSearch.icon &&
+            event.object.color == currentState.objectToSearch.color){
+            var previousColorIndex = CustomColors.arrayColors.indexOf(event.object.color);
+            if(currentState.colorText == colorsText[previousColorIndex]){
+              isCorrectAnswer = true;
+            } else {
+              isCorrectAnswer = false;
+            }
+        }
+      } else {
+        var colorIndex = _random.nextInt(colorsText.length);
+        colorText = colorsText[colorIndex];
+
+        if (event.object.icon == currentState.objectToSearch.icon &&
+            event.object.color == currentState.objectToSearch.color){
+          isCorrectAnswer = true;
+        } else {
+          isCorrectAnswer = false;
+        }
+      }
+
+      if(isCorrectAnswer){
+        scores = currentState.scores + 50;
+        _correctAnswerCounter++;
+      } else if(currentState.scores > 0) {
+        scores = currentState.scores - 50;
+        _correctAnswerCounter--;
+      }
+
+    }
+
+    yield GeneratedObjectsState(
+        objectToSearch: objectToSearch,
+        objects: objects,
+        typeOfSearch: typeOfSearch,
+        colorText: colorText,
+        scores: scores,
+        isCorrectAnswer: isCorrectAnswer);
   }
 
   Future<FindObjectModel> _generateRandomObject() async {
@@ -91,7 +172,17 @@ class FindObjectGameBloc
       FindObjectModel objectToSearch) async {
     var objects = <FindObjectModel>[];
 
-    for (int i = 0; i < 7; i++) {
+    var countObjects = 0;
+
+    if(_correctAnswerCounter < 5){
+      countObjects = 4;
+    } else if(_correctAnswerCounter < 10){
+      countObjects = 8;
+    } else if(_correctAnswerCounter < 15){
+      countObjects = 12;
+    }
+
+    for (int i = 0; i < countObjects - 1; i++) {
       var object = await _generateRandomObject();
       while (object.icon == objectToSearch.icon &&
           object.color == objectToSearch.color) {
@@ -100,7 +191,7 @@ class FindObjectGameBloc
       objects.add(object);
     }
 
-    var objectToSearchPosition = _random.nextInt(8);
+    var objectToSearchPosition = _random.nextInt(countObjects);
     objects.insert(objectToSearchPosition, objectToSearch);
 
     return objects;

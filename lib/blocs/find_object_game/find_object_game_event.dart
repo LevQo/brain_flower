@@ -1,3 +1,4 @@
+import 'package:brain_flower/data/find_object_game/find_object_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +15,10 @@ class InitStartScreenFindObject extends FindObjectGameEvent {
 }
 
 class SelectObjectEvent extends FindObjectGameEvent {
-  final Color color;
-  final Icon icon;
+  final FindObjectModel object;
 
-  SelectObjectEvent({this.color, this.icon});
+  SelectObjectEvent({this.object});
 
   @override
-  List<Object> get props => [this.color, this.icon];
+  List<Object> get props => [this.object];
 }

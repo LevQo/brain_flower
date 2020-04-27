@@ -66,7 +66,7 @@ class FindObjectGameScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TitleText(text: 'Найдите объект:', isCorrectAnswer: null),
+              TitleText(text: 'Найдите объект:', isCorrectAnswer: state.isCorrectAnswer),
               SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -124,10 +124,17 @@ class FindObjectGameScreen extends StatelessWidget {
     var objectWidgets = <Widget>[];
 
     objects.forEach((object) {
-      var objectWidget = Icon(
-        object.icon,
-        size: MediaQuery.of(context).size.width * 0.15,
-        color: object.color,
+      var objectWidget = GestureDetector(
+        onTap: () => context.bloc<FindObjectGameBloc>().add(
+              SelectObjectEvent(
+                object: FindObjectModel(object.color, object.icon),
+              ),
+            ),
+        child: Icon(
+          object.icon,
+          size: MediaQuery.of(context).size.width * 0.15,
+          color: object.color,
+        ),
       );
       objectWidgets.add(objectWidget);
     });

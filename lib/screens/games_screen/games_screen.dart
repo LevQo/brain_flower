@@ -64,6 +64,7 @@ class GamesScreen extends StatelessWidget {
                   _buildItem('Больше меньше', '/more_less_game'),
                   _buildItem('Найти число', '/find_number_game'),
                   _buildItem('Домино', '/dominoes_game'),
+                  _buildItem('Найти объект', '/find_object_game'),
                 ],
               ),
 //              child: ListView.builder(
