@@ -69,7 +69,7 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
     return Column(
       children: <Widget>[
         Container(
-          width: MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.8,
           child: AutoSizeText(
             widget.text,
             textAlign: TextAlign.center,

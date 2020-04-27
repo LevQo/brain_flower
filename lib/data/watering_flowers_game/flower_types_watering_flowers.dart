@@ -1,0 +1,1 @@
+enum FlowerTypesWateringFlowers{HEALTHY, WILTED}

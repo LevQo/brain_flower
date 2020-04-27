@@ -4,12 +4,6 @@ import 'package:flutter/material.dart';
 class GamesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<String> routes = [
-      '/more_less_game',
-      '/find_number_game',
-      '/dominoes_game'
-    ];
-
     Widget _buildItem(String gameText, String route){
       return  GestureDetector(
                     onTap: () => Navigator.pushNamed(context, route),

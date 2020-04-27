@@ -18,6 +18,8 @@ class CustomColors {
     Colors.black54
   ];
 
+  static const Color primaryDarkBackgroundColor = Color(0xFF26272B);
+
   static const Color defaultShadowColor = Color(0x1A111649);
   static const Color timerColor = Color(0x4DFFFFFF);
 
