@@ -80,8 +80,8 @@ class DominoesGameBloc extends Bloc<DominoesGameEvent, DominoesGameState> {
   Future<List<bool>> _generateRandomDomino() async {
     final dots = <bool>[];
     for (int i = 0; i < 9; i++) {
-      var randomInt = _random.nextInt(2);
-      var isActiveDot = randomInt == 0;
+      var randomInt = _random.nextBool();
+      var isActiveDot = randomInt;
       dots.add(isActiveDot);
     }
     return dots;
