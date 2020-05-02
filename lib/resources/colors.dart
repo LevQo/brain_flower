@@ -24,9 +24,12 @@ class CustomColors {
   static const Color timerColor = Color(0x4DFFFFFF);
 
   //More Less Game
-  static const Color backgroundMoreLessColor = Color(0xFF3E60D6);
+  static const Color backgroundMoreLessColor = Color(0xFF3E60D6); //TODO REMOVE
   static const Color buttonMoreLessColor = Color(0xFF3ED6B1);
 
   //Find Number Game
-  static const Color backgroundFindNumberColor = Color(0xFFD63E63);
+  static const Color backgroundFindNumberColor = Color(0xFFD63E63); //TODO REMOVE
+
+  //Math Memory Game
+  static const Color cardMathMemoryColor = Color(0xFF591DBC);
 }
