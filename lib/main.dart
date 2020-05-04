@@ -21,8 +21,7 @@ class MyApp extends StatelessWidget {
           pageTransitionsTheme: PageTransitionsTheme(builders: {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           })),
-      home: FindNumberGameScreen(),
-      initialRoute: '/math_memory_game',
+      initialRoute: '/games',
       routes: {
         '/games': (context) => GamesScreen(),
         '/more_less_game': (context) => MoreLessGameScreen(),

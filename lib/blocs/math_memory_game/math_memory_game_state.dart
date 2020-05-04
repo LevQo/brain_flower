@@ -11,9 +11,14 @@ class InitialStateMathMemoryGame extends MathMemoryGameState {
 class GeneratedMathCardsState extends MathMemoryGameState {
   final MathGameCardModel currentNumber;
   final MathGameCardModel nextNumber;
+  final int correctNumber;
   final int scores;
   final bool isCorrectAnswer;
 
   GeneratedMathCardsState(
-      {this.currentNumber, this.nextNumber, this.scores, this.isCorrectAnswer});
+      {this.currentNumber,
+      this.nextNumber,
+      this.correctNumber,
+      this.scores,
+      this.isCorrectAnswer});
 }
