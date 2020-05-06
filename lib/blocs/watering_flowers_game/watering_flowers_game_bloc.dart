@@ -19,8 +19,8 @@ class WateringFlowersGameBloc
       WateringFlowersGameEvent event) async* {
     if (event is InitStartScreenWateringFlowers) {
       yield* _mapEventToStartScreen();
-    } else if (event is ToDowngradeFlowerGameEvent) {
-      yield* _mapEventToDowngradeState(event);
+    } else if (event is ToUpdateFlowerGameEvent) {
+      yield* _mapEventToUpdatedState(event);
     } else if (event is ToWaterFlowerGameEvent) {
       yield* _mapEventToWaterFlowerState(event);
     }
@@ -44,8 +44,8 @@ class WateringFlowersGameBloc
     return flowers;
   }
 
-  Stream<UpdatedWateringFlowersState> _mapEventToDowngradeState(
-      ToDowngradeFlowerGameEvent event) async* {
+  Stream<UpdatedWateringFlowersState> _mapEventToUpdatedState(
+      ToUpdateFlowerGameEvent event) async* {
     var flowers = <WateringFlowerModel>[];
     var scores = 0;
     var isCorrectAnswer;
@@ -58,10 +58,10 @@ class WateringFlowersGameBloc
 
       if (type == FlowerTypesWateringFlowers.HEALTHY) {
         type = FlowerTypesWateringFlowers.WILTED;
-      } else if (type == FlowerTypesWateringFlowers.WILTED) {
-        type = null;
-        if (scores > 0) {
-          scores -= 50;
+      } else {
+        type = FlowerTypesWateringFlowers.HEALTHY;
+        if (currentState.scores > 0) {
+          scores = currentState.scores - 50;
         }
       }
 
@@ -78,18 +78,21 @@ class WateringFlowersGameBloc
     var flowers = <WateringFlowerModel>[];
     var scores = 0;
     var isCorrectAnswer;
+    var timeToDowngrade;
 
     final currentState = state;
     if (currentState is UpdatedWateringFlowersState) {
       flowers = currentState.flowers;
       scores = currentState.scores;
+      timeToDowngrade = event.flower.timeToDowngrade;
       var type = event.flower.type;
 
       if (type == FlowerTypesWateringFlowers.HEALTHY) {
         if (scores > 0) {
           scores -= 50;
         }
-      } else if (type == FlowerTypesWateringFlowers.WILTED) {
+      } else {
+        timeToDowngrade = timeToDowngrade / 10;
         scores += 50;
         type = FlowerTypesWateringFlowers.HEALTHY;
       }

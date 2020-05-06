@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           pageTransitionsTheme: PageTransitionsTheme(builders: {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           })),
-      initialRoute: '/games',
+      initialRoute: '/watering_flowers_game',
       routes: {
         '/games': (context) => GamesScreen(),
         '/more_less_game': (context) => MoreLessGameScreen(),

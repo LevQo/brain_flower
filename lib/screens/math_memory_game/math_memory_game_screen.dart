@@ -236,7 +236,7 @@ class _MathKeyButtonState extends State<MathKeyButton>
       _animationController.forward();
 
       _animationController.addListener(() {
-        setState(() {});
+        setState(() {}); //TODO REMOVE SET STATE
       });
     }
   }

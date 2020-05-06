@@ -20,10 +20,10 @@ class ToWaterFlowerGameEvent extends WateringFlowersGameEvent {
   List<Object> get props => [this.flower];
 }
 
-class ToDowngradeFlowerGameEvent extends WateringFlowersGameEvent {
+class ToUpdateFlowerGameEvent extends WateringFlowersGameEvent {
   final WateringFlowerModel flower;
 
-  ToDowngradeFlowerGameEvent(this.flower);
+  ToUpdateFlowerGameEvent(this.flower);
 
   @override
   List<Object> get props => [this.flower];
