@@ -16,6 +16,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:brain_flower/utils/extensions.dart';
+import 'package:rxdart/transformers.dart';
 
 class WateringFlowersGameScreen extends StatelessWidget {
   @override
@@ -80,10 +81,15 @@ class WateringFlowersGameScreen extends StatelessWidget {
               SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Wrap(
-                  runSpacing: context.screenHeight * 0.04,
-                  spacing: context.screenWidth * 0.1,
-                  children: _buildFlowers(state.flowers),
+                child: FutureBuilder<List<Widget>>(
+                  future: _buildFlowers(state.flowers, context),
+                  builder: (context, snapshot) {
+                    return Wrap(
+                      runSpacing: context.screenHeight * 0.04,
+                      spacing: context.screenWidth * 0.1,
+                      children: snapshot.hasData ? snapshot.data : [],
+                    );
+                  },
                 ),
               ),
             ],
@@ -93,10 +99,12 @@ class WateringFlowersGameScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildFlowers(List<WateringFlowerModel> flowers) {
+  Future<List<Widget>> _buildFlowers( //TODO to Stream
+      List<WateringFlowerModel> flowers, BuildContext context) async {
     var flowerWidgets = <FlowerWateringGameWidget>[];
     flowers.forEach((flower) {
-      var flowerWidget = FlowerWateringGameWidget(flower: flower);
+      var flowerWidget =
+          FlowerWateringGameWidget(flower: flower);
       flowerWidgets.add(flowerWidget);
     });
     return flowerWidgets;
@@ -109,30 +117,46 @@ class FlowerWateringGameWidget extends StatefulWidget {
   const FlowerWateringGameWidget({this.flower});
 
   @override
-  _FlowerWateringGameWidgetState createState() =>
-      _FlowerWateringGameWidgetState();
+  _FlowerWateringGameWidgetState createState() => _FlowerWateringGameWidgetState();
 }
 
-class _FlowerWateringGameWidgetState extends State<FlowerWateringGameWidget>
-    with TickerProviderStateMixin {
-  AnimationController _animationController; //TODO REMOVE
+class _FlowerWateringGameWidgetState extends State<FlowerWateringGameWidget> {
   Timer _timer;
+  var startTime = 0;
 
   @override
   void initState() {
-    _initAnimation();
+    _initTimer();
     super.initState();
   }
 
   @override
   void didUpdateWidget(FlowerWateringGameWidget oldWidget) {
-    _initAnimation();
+    if(oldWidget.flower.type != widget.flower.type) {
+      _initTimer();
+    }
     super.didUpdateWidget(oldWidget);
+  }
+
+  void _initTimer() {
+    startTime = 0;
+    _timer = new Timer.periodic(
+      Duration(seconds: 1),
+          (Timer timer) {
+        if (startTime * 1000 >= widget.flower.timeToDowngrade) {
+          timer.cancel();
+          context
+              .bloc<WateringFlowersGameBloc>()
+              .add(ToUpdateFlowerGameEvent(widget.flower));
+        } else {
+          startTime = startTime + 1;
+        }
+      },
+    );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
     _timer.cancel();
     super.dispose();
   }
@@ -160,46 +184,5 @@ class _FlowerWateringGameWidgetState extends State<FlowerWateringGameWidget>
             fit: BoxFit.fitHeight,
           ),
         ));
-  }
-
-  Widget _buildEmptyItem(BuildContext context) {
-    return Container(
-      height: context.screenHeight * 0.1,
-      width: context.screenWidth * 0.12,
-    );
-  }
-
-  void _initAnimation() {
-    int startTime = 0;
-    var oneSec = Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (startTime == widget.flower.timeToDowngrade) {
-          timer.cancel();
-          _timer.cancel();
-          context
-              .bloc<WateringFlowersGameBloc>()
-              .add(ToUpdateFlowerGameEvent(widget.flower));
-        } else {
-          startTime = startTime + 1;
-        }
-      },
-    );
-
-//    _animationController = null;
-//    _animationController = AnimationController(
-//        vsync: this,
-//        duration: Duration(seconds: widget.flower.timeToDowngrade));
-//
-//    _animationController.forward();
-//
-//    _animationController.addStatusListener((status) {
-//      if (status == AnimationStatus.completed) {
-//        context
-//            .bloc<WateringFlowersGameBloc>()
-//            .add(ToDowngradeFlowerGameEvent(widget.flower));
-//      }
-//    });
   }
 }
