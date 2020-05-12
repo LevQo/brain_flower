@@ -2,6 +2,9 @@ class Drawables{
 
   Drawables._();
 
+  //Main
+  static const String backgroundHeader = "assets/images/header_background.png";
+
   //More Less Game
   static const String backgroundMoreLess = "assets/images/background_more_less.png";
 

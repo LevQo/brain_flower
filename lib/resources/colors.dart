@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomColors {
-  CustomColors._();
+  const CustomColors._();
 
   static const List<Color> arrayColors = [
     Colors.green,
@@ -18,7 +18,12 @@ class CustomColors {
     Colors.black54
   ];
 
-  static const Color primaryDarkBackgroundColor = Color(0xFF26272B);
+  static const Color kGreenLayerBackgroundColor = Color(0xFF53CAA0);
+  static const Color kHeaderBackgroundColor = Color(0xFF1CB981);
+
+  static const Color kPrimaryDarkColor = Color(0xFF26272B);
+  static const Color kPrimaryDarkBackgroundColor = Color(0xFF222328);
+  static const Color kBottomNavigationDarkColor = Color(0xFF22B2D31);
 
   static const Color defaultShadowColor = Color(0x1A111649);
   static const Color timerColor = Color(0x4DFFFFFF);

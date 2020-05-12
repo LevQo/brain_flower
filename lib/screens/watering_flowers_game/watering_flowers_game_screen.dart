@@ -25,7 +25,7 @@ class WateringFlowersGameScreen extends StatelessWidget {
       create: (context) =>
           WateringFlowersGameBloc()..add(InitStartScreenWateringFlowers()),
       child: Scaffold(
-        backgroundColor: CustomColors.primaryDarkBackgroundColor,
+        backgroundColor: CustomColors.kPrimaryDarkColor,
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

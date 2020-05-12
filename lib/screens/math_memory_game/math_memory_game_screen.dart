@@ -19,7 +19,7 @@ class MathMemoryGameScreen extends StatelessWidget {
       create: (context) =>
           MathMemoryGameBloc()..add(InitStartScreenMathMemory()),
       child: Scaffold(
-        backgroundColor: CustomColors.primaryDarkBackgroundColor,
+        backgroundColor: CustomColors.kPrimaryDarkColor,
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
