@@ -1,7 +1,9 @@
+import 'package:brain_flower/resources/colors.dart';
 import 'package:brain_flower/screens/dominoes_game/dominoes_game_screen.dart';
 import 'package:brain_flower/screens/find_number_game/find_number_game_screen.dart';
 import 'package:brain_flower/screens/find_object_game/find_object_game_screen.dart';
 import 'package:brain_flower/screens/games_screen/games_screen.dart';
+import 'package:brain_flower/screens/home_screen/home_screen.dart';
 import 'package:brain_flower/screens/math_memory_game/math_memory_game_screen.dart';
 import 'package:brain_flower/screens/more_less_game/more_less_game_screen.dart';
 import 'package:brain_flower/screens/watering_flowers_game/watering_flowers_game_screen.dart';
@@ -17,12 +19,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Brain Flower',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: CustomColors.kPrimaryColor,
           pageTransitionsTheme: PageTransitionsTheme(builders: {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           })),
-      initialRoute: '/games',
+      initialRoute: '/home',
       routes: {
+        '/home': (context) => HomeScreen(),
         '/games': (context) => GamesScreen(),
         '/more_less_game': (context) => MoreLessGameScreen(),
         '/find_number_game': (context) => FindNumberGameScreen(),

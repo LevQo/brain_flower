@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:brain_flower/data/games/game_types.dart';
 import 'package:brain_flower/resources/colors.dart';
-import 'package:brain_flower/resources/drawables.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:brain_flower/utils/extensions.dart';
+import 'package:quiver/collection.dart';
 
 class GamesScreen extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class _GamesScreenState extends State<GamesScreen> {
     _scrollController = ScrollController()
       ..addListener(() {
         if (_scrollController.offset < 0 && !isSwipeToBottom) {
-//          setState(() => isSwipeToBottom = false);
+//          setState(() => isSwipeToBottom = true);
         } else if (_scrollController.offset >= 0 && isSwipeToBottom) {
 //          setState(() => isSwipeToBottom = false);
         }
@@ -31,244 +31,237 @@ class _GamesScreenState extends State<GamesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildItem(String gameText, String route) {
-      return GestureDetector(
-        onTap: () => Navigator.pushNamed(context, route),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Align(
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.12,
-              width: MediaQuery.of(context).size.width * 0.8,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: CustomColors.defaultShadowColor,
-                        blurRadius: 10.0,
-                        offset: Offset(0.0, 4.0))
-                  ]),
-              child: Center(
-                child: Text(
-                  gameText,
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500),
-                ),
+    return Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                color: CustomColors.kPrimaryColor,
+                height: context.screenHeight * 0.1,
+                width: double.infinity,
               ),
             ),
-          ),
-        ),
-      );
-    }
-
-    return Scaffold(
-      backgroundColor: CustomColors.kGreenLayerBackgroundColor,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: CustomColors.kBottomNavigationDarkColor,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.videogame_asset,
-              color: CustomColors.kGreenLayerBackgroundColor,
+            Positioned(
+              top: context.screenHeight * 0.02,
+              left: 0.0,
+              right: 0.0,
+              child:
+                  _buildHeaderBackground(context, isAnimation: isSwipeToBottom),
             ),
-            title: Text(
-              'Игры',
-              style: TextStyle(color: CustomColors.kGreenLayerBackgroundColor),
+            Positioned(
+              top: context.screenHeight * 0.06,
+              left: context.screenWidth * 0.08,
+              right: 0.0,
+              child: AutoSizeText(
+                'Игры',
+                maxLines: 1,
+                maxFontSize: 34.0,
+                style: TextStyle(
+                    fontSize: 34.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500),
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.videogame_asset,
-              color: Colors.white,
-            ),
-            backgroundColor: CustomColors.kGreenLayerBackgroundColor,
-            title: Text(
-              'Игры',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.videogame_asset,
-              color: Colors.white,
-            ),
-            backgroundColor: CustomColors.kGreenLayerBackgroundColor,
-            title: Text(
-              'Игры',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              color: CustomColors.kHeaderBackgroundColor,
-              height: context.screenHeight * 0.1,
-              width: double.infinity,
-            ),
-          ),
-          Positioned(
-            top: context.screenHeight * 0.02,
-            left: 0.0,
-            right: 0.0,
-            child:
-                _buildHeaderBackground(context, isAnimation: isSwipeToBottom),
-          ),
-          Positioned(
-            top: context.screenHeight * 0.06,
-            left: context.screenWidth * 0.1,
-            right: 0.0,
-            child: AutoSizeText(
-              'Игры',
-              maxLines: 1,
-              maxFontSize: 34.0,
-              style: TextStyle(
-                  fontSize: 34.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-          Positioned(
-            top: context.screenHeight * 0.12,
-            left: 0.0,
-            right: 0.0,
-            bottom: 0.0,
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.only(top: context.screenHeight * 0.02),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: CustomColors.kPrimaryDarkBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24.0),
-                      topRight: Radius.circular(24.0),
+            Positioned(
+              top: context.screenHeight * 0.12,
+              left: 0.0,
+              right: 0.0,
+              bottom: 0.0,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: BouncingScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.only(top: context.screenHeight * 0.02),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: CustomColors.kPrimaryDarkBackgroundColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24.0),
+                        topRight: Radius.circular(24.0),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        GameSection(gameType: GameTypes.THINKING),
+                        GameSection(gameType: GameTypes.MEMORY),
+                        GameSection(gameType: GameTypes.REACTION),
+                        GameSection(gameType: GameTypes.ATTENTION),
+                        SizedBox(height: 20.0),
+                      ],
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: context.screenHeight * 0.02,
-                            left: context.screenWidth * 0.1),
-                        child: Text(
-                          'Мышление',
-                          style: TextStyle(fontSize: 20.0, color: Colors.white),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                            width: context.screenWidth * 0.4,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: CustomColors.defaultShadowColor,
-                                  blurRadius: 2,
-                                )
-                              ],
-                            ),
-                            child: SvgPicture.asset(
-                                'assets/images/more_less_card_dark.svg'),
-                          ),
-                          Container(
-                            width: context.screenWidth * 0.4,
-                            child: SvgPicture.asset(
-                                'assets/images/more_less_card_dark.svg'),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: context.screenHeight * 0.02,
-                            left: context.screenWidth * 0.1),
-                        child: Text(
-                          'Мышление',
-                          style: TextStyle(fontSize: 20.0, color: Colors.white),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                            width: context.screenWidth * 0.4,
-                            child: SvgPicture.asset(
-                                'assets/images/more_less_card_dark.svg'),
-                          ),
-                          Container(
-                            width: context.screenWidth * 0.4,
-                            child: SvgPicture.asset(
-                                'assets/images/more_less_card_dark.svg'),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: context.screenHeight * 0.02,
-                            left: context.screenWidth * 0.1),
-                        child: Text(
-                          'Мышление',
-                          style: TextStyle(fontSize: 20.0, color: Colors.white),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                            width: context.screenWidth * 0.4,
-                            child: SvgPicture.asset(
-                                'assets/images/more_less_card_dark.svg'),
-                          ),
-                          Container(
-                            width: context.screenWidth * 0.4,
-                            child: SvgPicture.asset(
-                                'assets/images/more_less_card_dark.svg'),
-                          ),
-                        ],
-                      ),
-                      _buildItem('Больше меньше', '/more_less_game'),
-                      _buildItem('Найти число', '/find_number_game'),
-                      _buildItem('Домино', '/dominoes_game'),
-                      _buildItem('Найти объект', '/find_object_game'),
-                      _buildItem('Цифры на память', '/math_memory_game'),
-                      _buildItem('Цифры на память', '/math_memory_game'),
-                    ],
-                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        );
   }
 
   Widget _buildHeaderBackground(BuildContext context, {bool isAnimation}) {
     return isAnimation
         ? SizedBox(
             height: context.screenHeight * 0.2,
-            child:
-                LottieBuilder.asset('assets/lottie_animations/test_anim.json'),
+            child: LottieBuilder.asset(
+              'assets/lottie_animations/header_animation.zip',
+              animate: true,
+            ),
           )
         : Image.asset(
             'assets/images/header_background.png',
             fit: BoxFit.fitWidth,
           );
   }
+}
 
-  List<Widget> _buildGamesSection() {
-    List<Widget> widgets = [];
+class GameSection extends StatelessWidget {
+  final GameTypes gameType;
 
-//    var title =
+  const GameSection({@required this.gameType});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _getChildren(context),
+      ),
+    );
+  }
+
+  List<Widget> _getChildren(BuildContext context) {
+    final List<Widget> widgets = [];
+    final List<Widget> rowChildren = [];
+
+    ///key is route, value is imageUri
+    final Multimap<String, String> games = Multimap<String, String>();
+    String title;
+
+    switch (gameType) {
+      case GameTypes.THINKING:
+        games.add('/more_less_game', 'assets/images/more_less_card_dark.png');
+        games.add('/dominoes_game', 'assets/images/dominoes_card_dark.png');
+        title = 'Мышление';
+        break;
+      case GameTypes.MEMORY:
+        games.add(
+            '/math_memory_game', 'assets/images/math_memory_card_dark.png');
+        games.add('/more_less_game2', 'assets/images/more_less_card_dark.png');
+        title = 'Память';
+        break;
+      case GameTypes.REACTION:
+        games.add(
+            '/more_less_game1', 'assets/images/shapes_game_card_dark.png');
+        games.add('/watering_flowers_game',
+            'assets/images/watering_flowers_card_dark.png');
+        title = 'Реакция';
+        break;
+      case GameTypes.ATTENTION:
+        games.add(
+            '/find_number_game', 'assets/images/find_number_card_dark.png');
+        games.add(
+            '/find_object_game', 'assets/images/find_object_card_dark.png');
+        title = 'Внимание';
+        break;
+    }
+
+    games.forEach((route, imageUri) {
+      Widget gameCard = GameCard(route: route, imageUri: imageUri);
+      rowChildren.add(gameCard);
+    });
+
+    Widget titleWidget = Padding(
+      padding: EdgeInsets.only(
+        top: context.screenHeight * 0.04,
+        left: context.screenWidth * 0.08,
+      ),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+    widgets.add(titleWidget);
+
+    Widget rowGames = Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: context.screenWidth * 0.02,
+        horizontal: context.screenWidth * 0.07,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: rowChildren,
+      ),
+    );
+    widgets.add(rowGames);
+    return widgets;
+  }
+}
+
+class GameCard extends StatefulWidget {
+  final String route;
+  final String imageUri;
+
+  const GameCard({this.route, this.imageUri});
+
+  @override
+  _GameCardState createState() => _GameCardState();
+}
+
+class _GameCardState extends State<GameCard>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  Animation _tapAnimation;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 200),
+    );
+    _tapAnimation = Tween(begin: 1.0, end: 0.9).animate(_animationController);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (details) => _animationController.forward(),
+      onTapCancel: () => _animationController.reverse(),
+      onTap: () {
+        _animationController.reverse();
+        Navigator.pushNamed(context, widget.route);
+      },
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _tapAnimation.value,
+            child: Container(
+              width: context.screenWidth * 0.41,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: CustomColors.kShadowDarkColor,
+                    blurRadius: 2,
+                  )
+                ],
+              ),
+              child: Image.asset(
+                widget.imageUri,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
