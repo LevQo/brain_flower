@@ -19,7 +19,7 @@ class MathMemoryGameScreen extends StatelessWidget {
       create: (context) =>
           MathMemoryGameBloc()..add(InitStartScreenMathMemory()),
       child: Scaffold(
-        backgroundColor: CustomColors.kPrimaryDarkColor,
+        backgroundColor: CustomColors.kBackgroundGameDarkColor,
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -110,9 +110,9 @@ class MathMemoryCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
                 offset: Offset(0.0, 6.0),
-                color: CustomColors.defaultShadowColor)
+                color: CustomColors.kDefaultShadowColor)
           ],
-          color: CustomColors.cardMathMemoryColor),
+          color: CustomColors.kCardMathMemoryColor),
       child: Stack(
         children: isMemorizedNumber
             ? _buildMemorizedNumberCard()

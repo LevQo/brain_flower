@@ -51,11 +51,11 @@ class FindNumberGameBloc
     if (currentState is GeneratedNumbersFindNumberState) {
       isCorrectAnswer = event.number == currentState.numberToSearch;
       if (isCorrectAnswer) {
-        scores = currentState.scores + Constants.defaultScoresForAnswer;
+        scores = currentState.scores + kDefaultScoresForAnswer;
         _correctAnswerCounter++;
       } else {
         if (scores > 0 || _correctAnswerCounter > 0) {
-          scores = currentState.scores - Constants.defaultScoresForAnswer;
+          scores = currentState.scores - kDefaultScoresForAnswer;
           _correctAnswerCounter--;
         }
       }

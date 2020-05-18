@@ -1,7 +1,3 @@
-class Constants{
+//Games
+const kDefaultScoresForAnswer = 50;
 
-  Constants._();
-
-  static const defaultScoresForAnswer = 50;
-
-}

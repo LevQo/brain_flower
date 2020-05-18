@@ -1,7 +1,6 @@
 import 'package:brain_flower/blocs/home_screen/home_bloc.dart';
 import 'package:brain_flower/resources/colors.dart';
 import 'package:brain_flower/screens/games_screen/games_screen.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             bottomNavigationBar: BottomNavigationBar(
               onTap: (index) => context.bloc<HomeBloc>().add(index),
               currentIndex: screenIndex,
-              backgroundColor: CustomColors.kPrimaryDarkColor,
+              backgroundColor: CustomColors.kBackgroundGameDarkColor,
               unselectedItemColor: Colors.grey,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(

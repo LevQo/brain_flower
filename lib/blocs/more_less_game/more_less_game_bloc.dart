@@ -47,11 +47,11 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
     if (currentState is GeneratedNumbersMoreLessState) {
       isCorrectAnswer = await _checkAnswer(currentState, event);
       if (isCorrectAnswer) {
-        score = currentState.scores + Constants.defaultScoresForAnswer;
+        score = currentState.scores + kDefaultScoresForAnswer;
         _correctAnswerCounter++;
       } else {
         if (currentState.scores > 0 || _correctAnswerCounter > 0) {
-          score = currentState.scores - Constants.defaultScoresForAnswer;
+          score = currentState.scores - kDefaultScoresForAnswer;
           _correctAnswerCounter--;
         }
       }

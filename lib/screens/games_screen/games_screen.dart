@@ -2,12 +2,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brain_flower/blocs/animations/header_animation_bloc.dart';
 import 'package:brain_flower/blocs/animations/header_animation_state.dart';
 import 'package:brain_flower/data/games/game_types.dart';
-import 'package:brain_flower/resources/colors.dart';
+import 'package:brain_flower/resources/animations.dart';
+import 'package:brain_flower/resources/drawables.dart';
+import 'package:brain_flower/resources/routes.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:brain_flower/utils/extensions.dart';
 import 'package:quiver/collection.dart';
+
+import 'game_card.dart';
 
 class GamesScreen extends StatefulWidget {
   @override
@@ -21,7 +25,6 @@ class _GamesScreenState extends State<GamesScreen> {
   @override
   void initState() {
     _animationBloc = HeaderAnimationBloc();
-
     _scrollController = ScrollController()
       ..addListener(() {
         if (_scrollController.offset < 0 && _animationBloc.state.isPaused) {
@@ -48,8 +51,8 @@ class _GamesScreenState extends State<GamesScreen> {
             builder: (context, state) {
               return Container(
                 child: FlareActor(
-                  'assets/animations/header_animation.flr',
-                  animation: "Default",
+                  Animations.headerAnimation,
+                  animation: Animations.defaultAnimationName,
                   sizeFromArtboard: true,
                   fit: BoxFit.fitWidth,
                   isPaused: state.isPaused,
@@ -84,7 +87,7 @@ class _GamesScreenState extends State<GamesScreen> {
               padding: EdgeInsets.only(top: context.screenHeight * 0.02),
               child: Container(
                 decoration: BoxDecoration(
-                  color: CustomColors.kPrimaryDarkBackgroundColor,
+                  color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24.0),
                     topRight: Radius.circular(24.0),
@@ -93,10 +96,10 @@ class _GamesScreenState extends State<GamesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    GameSection(gameType: GameTypes.THINKING),
-                    GameSection(gameType: GameTypes.MEMORY),
-                    GameSection(gameType: GameTypes.REACTION),
-                    GameSection(gameType: GameTypes.ATTENTION),
+                    ..._buildGamesSection(context, GameTypes.THINKING),
+                    ..._buildGamesSection(context, GameTypes.MEMORY),
+                    ..._buildGamesSection(context, GameTypes.REACTION),
+                    ..._buildGamesSection(context, GameTypes.ATTENTION),
                     SizedBox(height: 20.0),
                   ],
                 ),
@@ -107,24 +110,8 @@ class _GamesScreenState extends State<GamesScreen> {
       ],
     );
   }
-}
 
-class GameSection extends StatelessWidget {
-  final GameTypes gameType;
-
-  const GameSection({@required this.gameType});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _getChildren(context),
-      ),
-    );
-  }
-
-  List<Widget> _getChildren(BuildContext context) {
+  List<Widget> _buildGamesSection(BuildContext context, GameTypes gameType) {
     final List<Widget> widgets = [];
     final List<Widget> rowChildren = [];
 
@@ -134,28 +121,23 @@ class GameSection extends StatelessWidget {
 
     switch (gameType) {
       case GameTypes.THINKING:
-        games.add('/more_less_game', 'assets/images/more_less_card_dark.png');
-        games.add('/dominoes_game', 'assets/images/dominoes_card_dark.png');
+        games.add(Routes.moreLessGame, Drawables.moreLessCardDark);
+        games.add(Routes.dominoesGame, Drawables.dominoesCardDark);
         title = 'Мышление';
         break;
       case GameTypes.MEMORY:
-        games.add(
-            '/math_memory_game', 'assets/images/math_memory_card_dark.png');
-        games.add('/more_less_game2', 'assets/images/more_less_card_dark.png');
+        games.add(Routes.mathMemoryGame, Drawables.mathMemoryCardDark);
+        games.add('/', Drawables.moreLessCardDark);
         title = 'Память';
         break;
       case GameTypes.REACTION:
-        games.add(
-            '/more_less_game1', 'assets/images/shapes_game_card_dark.png');
-        games.add('/watering_flowers_game',
-            'assets/images/watering_flowers_card_dark.png');
+        games.add('/', Drawables.moreLessCardDark);
+        games.add(Routes.wateringFlowers, Drawables.wateringFlowersCardDark);
         title = 'Реакция';
         break;
       case GameTypes.ATTENTION:
-        games.add(
-            '/find_number_game', 'assets/images/find_number_card_dark.png');
-        games.add(
-            '/find_object_game', 'assets/images/find_object_card_dark.png');
+        games.add(Routes.findNumberGame, Drawables.findNumberCardDark);
+        games.add(Routes.findObjectGame, Drawables.findObjectGameCardDark);
         title = 'Внимание';
         break;
     }
@@ -189,73 +171,5 @@ class GameSection extends StatelessWidget {
     );
     widgets.add(rowGames);
     return widgets;
-  }
-}
-
-class GameCard extends StatefulWidget {
-  final String route;
-  final String imageUri;
-
-  const GameCard({this.route, this.imageUri});
-
-  @override
-  _GameCardState createState() => _GameCardState();
-}
-
-class _GameCardState extends State<GameCard>
-    with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation _tapAnimation;
-
-  @override
-  void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 200),
-    );
-    _tapAnimation = Tween(begin: 1.0, end: 0.9).animate(_animationController);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (details) => _animationController.forward(),
-      onTapCancel: () => _animationController.reverse(),
-      onTap: () {
-        _animationController.reverse();
-        Navigator.pushNamed(context, widget.route);
-      },
-      child: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return Transform.scale(
-            scale: _tapAnimation.value,
-            child: Container(
-              width: context.screenWidth * 0.41,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: CustomColors.kShadowDarkColor,
-                    blurRadius: 2,
-                  )
-                ],
-              ),
-              child: Image.asset(
-                widget.imageUri,
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-          );
-        },
-      ),
-    );
   }
 }
