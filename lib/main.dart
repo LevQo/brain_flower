@@ -6,6 +6,7 @@ import 'package:brain_flower/screens/games_screen/games_screen.dart';
 import 'package:brain_flower/screens/home_screen/home_screen.dart';
 import 'package:brain_flower/screens/math_memory_game/math_memory_game_screen.dart';
 import 'package:brain_flower/screens/more_less_game/more_less_game_screen.dart';
+import 'package:brain_flower/screens/ufo_shapes_game/ufo_shapes_game_screen.dart';
 import 'package:brain_flower/screens/watering_flowers_game/watering_flowers_game_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/find_object_game': (context) => FindObjectGameScreen(),
         '/watering_flowers_game': (context) => WateringFlowersGameScreen(),
         '/math_memory_game': (context) => MathMemoryGameScreen(),
+        '/ufo_shapes_game': (context) => UfoShapesGameScreen(),
       },
     );
   }

@@ -1,8 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:brain_flower/blocs/animations/header_animation_bloc.dart';
+import 'package:brain_flower/blocs/animations/header_animation_state.dart';
 import 'package:brain_flower/data/games/game_types.dart';
 import 'package:brain_flower/resources/colors.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:brain_flower/utils/extensions.dart';
 import 'package:quiver/collection.dart';
 
@@ -13,105 +16,96 @@ class GamesScreen extends StatefulWidget {
 
 class _GamesScreenState extends State<GamesScreen> {
   ScrollController _scrollController;
-  bool isSwipeToBottom = false;
+  HeaderAnimationBloc _animationBloc;
 
   @override
   void initState() {
+    _animationBloc = HeaderAnimationBloc();
+
     _scrollController = ScrollController()
       ..addListener(() {
-        if (_scrollController.offset < 0 && !isSwipeToBottom) {
-//          setState(() => isSwipeToBottom = true);
-        } else if (_scrollController.offset >= 0 && isSwipeToBottom) {
-//          setState(() => isSwipeToBottom = false);
+        if (_scrollController.offset < 0 && _animationBloc.state.isPaused) {
+          _animationBloc.add(false);
+        } else if (_scrollController.offset >= 0 &&
+            !_animationBloc.state.isPaused) {
+          _animationBloc.add(true);
         }
       });
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
+      fit: StackFit.expand,
+      children: <Widget>[
+        Positioned(
+          top: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: BlocBuilder<HeaderAnimationBloc, HeaderAnimationState>(
+            bloc: _animationBloc,
+            builder: (context, state) {
+              return Container(
+                child: FlareActor(
+                  'assets/animations/header_animation.flr',
+                  animation: "Default",
+                  sizeFromArtboard: true,
+                  fit: BoxFit.fitWidth,
+                  isPaused: state.isPaused,
+                ),
+              );
+            },
+          ),
+        ),
+        Positioned(
+          top: context.screenHeight * 0.06,
+          left: context.screenWidth * 0.08,
+          right: 0.0,
+          child: AutoSizeText(
+            'Игры',
+            maxLines: 1,
+            maxFontSize: 34.0,
+            style: TextStyle(
+                fontSize: 34.0,
+                color: Colors.white,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+        Positioned(
+          top: context.screenHeight * 0.12,
+          left: 0.0,
+          right: 0.0,
+          bottom: 0.0,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.only(top: context.screenHeight * 0.02),
               child: Container(
-                color: CustomColors.kPrimaryColor,
-                height: context.screenHeight * 0.1,
-                width: double.infinity,
-              ),
-            ),
-            Positioned(
-              top: context.screenHeight * 0.02,
-              left: 0.0,
-              right: 0.0,
-              child:
-                  _buildHeaderBackground(context, isAnimation: isSwipeToBottom),
-            ),
-            Positioned(
-              top: context.screenHeight * 0.06,
-              left: context.screenWidth * 0.08,
-              right: 0.0,
-              child: AutoSizeText(
-                'Игры',
-                maxLines: 1,
-                maxFontSize: 34.0,
-                style: TextStyle(
-                    fontSize: 34.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-            Positioned(
-              top: context.screenHeight * 0.12,
-              left: 0.0,
-              right: 0.0,
-              bottom: 0.0,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: EdgeInsets.only(top: context.screenHeight * 0.02),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: CustomColors.kPrimaryDarkBackgroundColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24.0),
-                        topRight: Radius.circular(24.0),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        GameSection(gameType: GameTypes.THINKING),
-                        GameSection(gameType: GameTypes.MEMORY),
-                        GameSection(gameType: GameTypes.REACTION),
-                        GameSection(gameType: GameTypes.ATTENTION),
-                        SizedBox(height: 20.0),
-                      ],
-                    ),
+                decoration: BoxDecoration(
+                  color: CustomColors.kPrimaryDarkBackgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24.0),
+                    topRight: Radius.circular(24.0),
                   ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    GameSection(gameType: GameTypes.THINKING),
+                    GameSection(gameType: GameTypes.MEMORY),
+                    GameSection(gameType: GameTypes.REACTION),
+                    GameSection(gameType: GameTypes.ATTENTION),
+                    SizedBox(height: 20.0),
+                  ],
                 ),
               ),
             ),
-          ],
-        );
-  }
-
-  Widget _buildHeaderBackground(BuildContext context, {bool isAnimation}) {
-    return isAnimation
-        ? SizedBox(
-            height: context.screenHeight * 0.2,
-            child: LottieBuilder.asset(
-              'assets/lottie_animations/header_animation.zip',
-              animate: true,
-            ),
-          )
-        : Image.asset(
-            'assets/images/header_background.png',
-            fit: BoxFit.fitWidth,
-          );
+          ),
+        ),
+      ],
+    );
   }
 }
 

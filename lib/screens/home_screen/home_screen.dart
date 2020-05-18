@@ -1,11 +1,11 @@
-import 'package:brain_flower/blocs/home/home_bloc.dart';
+import 'package:brain_flower/blocs/home_screen/home_bloc.dart';
 import 'package:brain_flower/resources/colors.dart';
 import 'package:brain_flower/screens/games_screen/games_screen.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../settings_screen.dart';
+import '../settings_screen/settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -55,6 +55,7 @@ class HomeScreen extends StatelessWidget {
       default:
         scaffoldBody = GamesScreen();
     }
+
     return scaffoldBody;
   }
 }
