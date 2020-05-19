@@ -139,10 +139,10 @@ class NumberContainerMoreLess extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
-            color: CustomColors.kButtonMoreLessColor,
+            color: CustomColors.buttonMoreLessColor,
             boxShadow: [
               BoxShadow(
-                  color: CustomColors.kDefaultShadowColor,
+                  color: CustomColors.defaultShadowColor,
                   offset: Offset(0.0, 4.0),
                   blurRadius: 10.0)
             ]),

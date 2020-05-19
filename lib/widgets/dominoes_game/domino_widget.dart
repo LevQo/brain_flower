@@ -16,7 +16,7 @@ class Domino extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               blurRadius: 10.0,
-              color: CustomColors.kDefaultShadowColor,
+              color: CustomColors.defaultShadowColor,
               offset: Offset(0.0, 4.0),
             )
           ],

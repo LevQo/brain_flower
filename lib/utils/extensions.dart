@@ -10,6 +10,12 @@ extension GetScreenSize on BuildContext {
   }
 }
 
+extension GetThemeData on BuildContext {
+  bool get isLightThemeMode{
+    return Theme.of(this).brightness == Brightness.light;
+  }
+}
+
 extension GlobalKeyEx on GlobalKey {
   Rect get globalPaintBounds {
     final renderObject = currentContext?.findRenderObject();

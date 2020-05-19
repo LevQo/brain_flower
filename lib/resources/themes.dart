@@ -10,7 +10,7 @@ enum AppTheme {
 final appThemeData = {
   AppTheme.LightTheme: ThemeData(
     brightness: Brightness.light,
-    primaryColor: CustomColors.kPrimaryColor,
+    primaryColor: CustomColors.primaryColor,
     backgroundColor: Colors.white,
     pageTransitionsTheme: PageTransitionsTheme(
       builders: {
@@ -20,8 +20,8 @@ final appThemeData = {
   ),
   AppTheme.DarkTheme: ThemeData(
     brightness: Brightness.dark,
-    primaryColor: CustomColors.kPrimaryColor,
-    backgroundColor: CustomColors.kBackgroundDarkColor,
+    primaryColor: CustomColors.primaryColor,
+    backgroundColor: CustomColors.backgroundDarkColor,
     pageTransitionsTheme: PageTransitionsTheme(
       builders: {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

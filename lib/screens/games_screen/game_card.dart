@@ -53,8 +53,8 @@ class _GameCardState extends State<GameCard>
                 borderRadius: BorderRadius.circular(20.0),
                 boxShadow: [
                   BoxShadow(
-                    color: CustomColors.kShadowDarkColor,
-                    blurRadius: 2,
+                    color: CustomColors.shadowDarkColor,
+                    blurRadius: 5.0,
                   )
                 ],
               ),

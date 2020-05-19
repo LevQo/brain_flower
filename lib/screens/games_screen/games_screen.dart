@@ -5,6 +5,7 @@ import 'package:brain_flower/data/games/game_types.dart';
 import 'package:brain_flower/resources/animations.dart';
 import 'package:brain_flower/resources/drawables.dart';
 import 'package:brain_flower/resources/routes.dart';
+import 'package:brain_flower/resources/text_styles.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,10 +43,8 @@ class _GamesScreenState extends State<GamesScreen> {
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
-        Positioned(
-          top: 0.0,
-          left: 0.0,
-          right: 0.0,
+        Align(
+          alignment: Alignment.topCenter,
           child: BlocBuilder<HeaderAnimationBloc, HeaderAnimationState>(
             bloc: _animationBloc,
             builder: (context, state) {
@@ -69,10 +68,7 @@ class _GamesScreenState extends State<GamesScreen> {
             'Игры',
             maxLines: 1,
             maxFontSize: 34.0,
-            style: TextStyle(
-                fontSize: 34.0,
-                color: Colors.white,
-                fontWeight: FontWeight.w500),
+            style: CustomTextStyle.headerTitle(),
           ),
         ),
         Positioned(
@@ -119,25 +115,62 @@ class _GamesScreenState extends State<GamesScreen> {
     final Multimap<String, String> games = Multimap<String, String>();
     String title;
 
+    final bool isLightThemeMode = context.isLightThemeMode;
+
     switch (gameType) {
       case GameTypes.THINKING:
-        games.add(Routes.moreLessGame, Drawables.moreLessCardDark);
-        games.add(Routes.dominoesGame, Drawables.dominoesCardDark);
+        games.add(
+            Routes.moreLessGame,
+            isLightThemeMode
+                ? Drawables.moreLessCardLight
+                : Drawables.moreLessCardDark);
+        games.add(
+            Routes.dominoesGame,
+            isLightThemeMode
+                ? Drawables.dominoesCardLight
+                : Drawables.dominoesCardDark);
         title = 'Мышление';
         break;
+
       case GameTypes.MEMORY:
-        games.add(Routes.mathMemoryGame, Drawables.mathMemoryCardDark);
-        games.add('/', Drawables.moreLessCardDark);
+        games.add(
+            Routes.mathMemoryGame,
+            isLightThemeMode
+                ? Drawables.mathMemoryCardLight
+                : Drawables.mathMemoryCardDark);
+        games.add(
+            '/',
+            isLightThemeMode
+                ? Drawables.moreLessCardLight
+                : Drawables.moreLessCardDark);
         title = 'Память';
         break;
+
       case GameTypes.REACTION:
-        games.add('/', Drawables.moreLessCardDark);
-        games.add(Routes.wateringFlowers, Drawables.wateringFlowersCardDark);
+        games.add(
+            '/',
+            isLightThemeMode
+                ? Drawables.moreLessCardLight
+                : Drawables.moreLessCardDark);
+        games.add(
+            Routes.wateringFlowers,
+            isLightThemeMode
+                ? Drawables.wateringFlowersCardLight
+                : Drawables.wateringFlowersCardDark);
         title = 'Реакция';
         break;
+
       case GameTypes.ATTENTION:
-        games.add(Routes.findNumberGame, Drawables.findNumberCardDark);
-        games.add(Routes.findObjectGame, Drawables.findObjectGameCardDark);
+        games.add(
+            Routes.findNumberGame,
+            isLightThemeMode
+                ? Drawables.findNumberCardLight
+                : Drawables.findNumberCardDark);
+        games.add(
+            Routes.findObjectGame,
+            isLightThemeMode
+                ? Drawables.findObjectCardLight
+                : Drawables.findObjectCardDark);
         title = 'Внимание';
         break;
     }
@@ -154,7 +187,7 @@ class _GamesScreenState extends State<GamesScreen> {
       ),
       child: Text(
         title,
-        style: TextStyle(fontSize: 20.0, color: Colors.white),
+        style: CustomTextStyle.defaultText(context),
       ),
     );
     widgets.add(titleWidget);

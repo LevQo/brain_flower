@@ -2,24 +2,29 @@ import 'package:brain_flower/blocs/home_screen/home_bloc.dart';
 import 'package:brain_flower/resources/colors.dart';
 import 'package:brain_flower/screens/games_screen/games_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:brain_flower/utils/extensions.dart';
 
 import '../settings_screen/settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return BlocProvider<HomeBloc>(
       create: (context) => HomeBloc(),
       child: BlocBuilder<HomeBloc, int>(
-        builder: (context, screenIndex){
+        builder: (context, screenIndex) {
           return Scaffold(
-            backgroundColor: CustomColors.kGreenLayerBackgroundColor,
+            backgroundColor: CustomColors.greenLayerBackgroundColor,
             body: _buildScaffoldBody(screenIndex),
             bottomNavigationBar: BottomNavigationBar(
               onTap: (index) => context.bloc<HomeBloc>().add(index),
               currentIndex: screenIndex,
-              backgroundColor: CustomColors.kBackgroundGameDarkColor,
+              backgroundColor: context.isLightThemeMode
+                  ? Colors.white
+                  : CustomColors.backgroundGameDarkColor,
               unselectedItemColor: Colors.grey,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
@@ -42,9 +47,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScaffoldBody(int index){
+  Widget _buildScaffoldBody(int index) {
     Widget scaffoldBody;
-    switch(index) {
+    switch (index) {
       case 0:
         scaffoldBody = GamesScreen();
         break;
@@ -54,7 +59,6 @@ class HomeScreen extends StatelessWidget {
       default:
         scaffoldBody = GamesScreen();
     }
-
     return scaffoldBody;
   }
 }
