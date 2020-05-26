@@ -14,6 +14,6 @@ class CustomTextStyle {
     return TextStyle(
         fontSize: 34.0,
         color: Colors.white,
-        fontWeight: FontWeight.w500);
+        fontWeight: FontWeight.bold);
   }
 }

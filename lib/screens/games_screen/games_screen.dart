@@ -49,6 +49,7 @@ class _GamesScreenState extends State<GamesScreen> {
             bloc: _animationBloc,
             builder: (context, state) {
               return Container(
+                width: double.infinity,
                 child: FlareActor(
                   Animations.headerAnimation,
                   animation: Animations.defaultAnimationName,
@@ -85,8 +86,8 @@ class _GamesScreenState extends State<GamesScreen> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24.0),
-                    topRight: Radius.circular(24.0),
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
                   ),
                 ),
                 child: Column(
