@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.build),
-            title: Text('Скоро'),
+            title: Text('...'),
           ),
         ],
       ),

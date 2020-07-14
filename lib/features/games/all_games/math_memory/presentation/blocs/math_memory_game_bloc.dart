@@ -12,18 +12,18 @@ class MathMemoryGameBloc extends Bloc<MathMemoryGameEvent, MathMemoryGameState> 
   int _numberToRemember;
 
   @override
-  MathMemoryGameState get initialState => InitialStateMathMemoryGame();
+  MathMemoryGameState get initialState => MathMemoryGameState.initial();
 
   @override
   Stream<MathMemoryGameState> mapEventToState(MathMemoryGameEvent event) async* {
-    if (event is InitStartScreenMathMemory) {
+    yield* event.when(initStartScreen: () async* {
       yield* _mapToStartScreenState();
-    } else if (event is ToAnswerMathMemoryEvent) {
-      yield* _mapToGeneratedMathCardState(event);
-    }
+    }, toAnswer: (number) async* {
+      yield* _mapToGeneratedMathCardState(number);
+    });
   }
 
-  Stream<GeneratedMathCardsState> _mapToStartScreenState() async* {
+  Stream<MathMemoryGameState> _mapToStartScreenState() async* {
     var randomNumber = 1 + _random.nextInt(8 - 1);
     var number = MathGameCardModel(number: '+' + randomNumber.toString());
 
@@ -44,18 +44,18 @@ class MathMemoryGameBloc extends Bloc<MathMemoryGameEvent, MathMemoryGameState> 
 
     var nextNumber = MathGameCardModel(number: mathSign + randomNextNumber.toString());
 
-    yield GeneratedMathCardsState(
+    yield MathMemoryGameState.generatedMathCards(
         currentNumber: number, nextNumber: nextNumber, scores: 0, isCorrectAnswer: null);
   }
 
-  Stream<GeneratedMathCardsState> _mapToGeneratedMathCardState(ToAnswerMathMemoryEvent event) async* {
+  Stream<MathMemoryGameState> _mapToGeneratedMathCardState(int number) async* {
     MathGameCardModel currentNumber;
     MathGameCardModel nextNumber;
     var isCorrectAnswer;
     var scores;
 
     final currentState = state;
-    if (currentState is GeneratedMathCardsState) {
+    if (currentState is GeneratedMathCards) {
       scores = currentState.scores;
 
       await _calculateCurrentResult(
@@ -64,7 +64,7 @@ class MathMemoryGameBloc extends Bloc<MathMemoryGameEvent, MathMemoryGameState> 
       currentNumber = currentState.nextNumber;
       nextNumber = await _generateNextNumber(currentNumber);
 
-      isCorrectAnswer = event.number == _currentResult;
+      isCorrectAnswer = number == _currentResult;
 
       if (isCorrectAnswer) {
         scores += 50;
@@ -73,32 +73,13 @@ class MathMemoryGameBloc extends Bloc<MathMemoryGameEvent, MathMemoryGameState> 
       }
     }
 
-    yield GeneratedMathCardsState(
+    yield MathMemoryGameState.generatedMathCards(
         currentNumber: currentNumber,
         nextNumber: nextNumber,
         correctNumber: _currentResult,
         scores: scores,
         isCorrectAnswer: isCorrectAnswer);
   }
-
-//  Future<MathGameCardModel> _generateNextNumber(
-//      MathGameCardModel currentNumberModel) async {
-//    String numberString;
-//    bool isPlusOperation = true;
-//
-//    int randomNumber = 1 + _random.nextInt(8 - 1);
-//    int nextResult = _currentResult + int.parse(currentNumberModel.number);
-//
-//    if(nextResult < 8){
-//      isPlusOperation = _random.nextBool();
-//    } else {
-//
-//    }
-//
-//
-//    return MathGameCardModel(number: numberString
-//    );
-//  }
 
   Future<MathGameCardModel> _generateNextNumber(MathGameCardModel currentNumberModel) async {
     var nextNumberString = "";

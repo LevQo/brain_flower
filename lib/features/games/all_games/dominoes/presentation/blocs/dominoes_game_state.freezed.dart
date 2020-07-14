@@ -21,15 +21,15 @@ class _$DominoesGameStateTearOff {
       @required List<bool> secondDominoDots,
       @required List<List<bool>> dominoesForAnswer,
       @required int correctAnswerPosition,
-      @required bool isCorrectAnswer,
-      @required int scores}) {
+      int scores,
+      bool isCorrectAnswer}) {
     return GeneratedDominoes(
       firstDominoDots: firstDominoDots,
       secondDominoDots: secondDominoDots,
       dominoesForAnswer: dominoesForAnswer,
       correctAnswerPosition: correctAnswerPosition,
-      isCorrectAnswer: isCorrectAnswer,
       scores: scores,
+      isCorrectAnswer: isCorrectAnswer,
     );
   }
 }
@@ -47,8 +47,8 @@ mixin _$DominoesGameState {
             List<bool> secondDominoDots,
             List<List<bool>> dominoesForAnswer,
             int correctAnswerPosition,
-            bool isCorrectAnswer,
-            int scores),
+            int scores,
+            bool isCorrectAnswer),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -58,8 +58,8 @@ mixin _$DominoesGameState {
         List<bool> secondDominoDots,
         List<List<bool>> dominoesForAnswer,
         int correctAnswerPosition,
-        bool isCorrectAnswer,
-        int scores),
+        int scores,
+        bool isCorrectAnswer),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -136,8 +136,8 @@ class _$_Initial with DiagnosticableTreeMixin implements _Initial {
             List<bool> secondDominoDots,
             List<List<bool>> dominoesForAnswer,
             int correctAnswerPosition,
-            bool isCorrectAnswer,
-            int scores),
+            int scores,
+            bool isCorrectAnswer),
   }) {
     assert(initial != null);
     assert(generatedDominoes != null);
@@ -153,8 +153,8 @@ class _$_Initial with DiagnosticableTreeMixin implements _Initial {
         List<bool> secondDominoDots,
         List<List<bool>> dominoesForAnswer,
         int correctAnswerPosition,
-        bool isCorrectAnswer,
-        int scores),
+        int scores,
+        bool isCorrectAnswer),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -203,8 +203,8 @@ abstract class $GeneratedDominoesCopyWith<$Res> {
       List<bool> secondDominoDots,
       List<List<bool>> dominoesForAnswer,
       int correctAnswerPosition,
-      bool isCorrectAnswer,
-      int scores});
+      int scores,
+      bool isCorrectAnswer});
 }
 
 class _$GeneratedDominoesCopyWithImpl<$Res>
@@ -223,8 +223,8 @@ class _$GeneratedDominoesCopyWithImpl<$Res>
     Object secondDominoDots = freezed,
     Object dominoesForAnswer = freezed,
     Object correctAnswerPosition = freezed,
-    Object isCorrectAnswer = freezed,
     Object scores = freezed,
+    Object isCorrectAnswer = freezed,
   }) {
     return _then(GeneratedDominoes(
       firstDominoDots: firstDominoDots == freezed
@@ -239,10 +239,10 @@ class _$GeneratedDominoesCopyWithImpl<$Res>
       correctAnswerPosition: correctAnswerPosition == freezed
           ? _value.correctAnswerPosition
           : correctAnswerPosition as int,
+      scores: scores == freezed ? _value.scores : scores as int,
       isCorrectAnswer: isCorrectAnswer == freezed
           ? _value.isCorrectAnswer
           : isCorrectAnswer as bool,
-      scores: scores == freezed ? _value.scores : scores as int,
     ));
   }
 }
@@ -255,14 +255,12 @@ class _$GeneratedDominoes
       @required this.secondDominoDots,
       @required this.dominoesForAnswer,
       @required this.correctAnswerPosition,
-      @required this.isCorrectAnswer,
-      @required this.scores})
+      this.scores,
+      this.isCorrectAnswer})
       : assert(firstDominoDots != null),
         assert(secondDominoDots != null),
         assert(dominoesForAnswer != null),
-        assert(correctAnswerPosition != null),
-        assert(isCorrectAnswer != null),
-        assert(scores != null);
+        assert(correctAnswerPosition != null);
 
   @override
   final List<bool> firstDominoDots;
@@ -273,13 +271,13 @@ class _$GeneratedDominoes
   @override
   final int correctAnswerPosition;
   @override
-  final bool isCorrectAnswer;
-  @override
   final int scores;
+  @override
+  final bool isCorrectAnswer;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DominoesGameState.generatedDominoes(firstDominoDots: $firstDominoDots, secondDominoDots: $secondDominoDots, dominoesForAnswer: $dominoesForAnswer, correctAnswerPosition: $correctAnswerPosition, isCorrectAnswer: $isCorrectAnswer, scores: $scores)';
+    return 'DominoesGameState.generatedDominoes(firstDominoDots: $firstDominoDots, secondDominoDots: $secondDominoDots, dominoesForAnswer: $dominoesForAnswer, correctAnswerPosition: $correctAnswerPosition, scores: $scores, isCorrectAnswer: $isCorrectAnswer)';
   }
 
   @override
@@ -291,8 +289,8 @@ class _$GeneratedDominoes
       ..add(DiagnosticsProperty('secondDominoDots', secondDominoDots))
       ..add(DiagnosticsProperty('dominoesForAnswer', dominoesForAnswer))
       ..add(DiagnosticsProperty('correctAnswerPosition', correctAnswerPosition))
-      ..add(DiagnosticsProperty('isCorrectAnswer', isCorrectAnswer))
-      ..add(DiagnosticsProperty('scores', scores));
+      ..add(DiagnosticsProperty('scores', scores))
+      ..add(DiagnosticsProperty('isCorrectAnswer', isCorrectAnswer));
   }
 
   @override
@@ -311,11 +309,11 @@ class _$GeneratedDominoes
             (identical(other.correctAnswerPosition, correctAnswerPosition) ||
                 const DeepCollectionEquality().equals(
                     other.correctAnswerPosition, correctAnswerPosition)) &&
+            (identical(other.scores, scores) ||
+                const DeepCollectionEquality().equals(other.scores, scores)) &&
             (identical(other.isCorrectAnswer, isCorrectAnswer) ||
                 const DeepCollectionEquality()
-                    .equals(other.isCorrectAnswer, isCorrectAnswer)) &&
-            (identical(other.scores, scores) ||
-                const DeepCollectionEquality().equals(other.scores, scores)));
+                    .equals(other.isCorrectAnswer, isCorrectAnswer)));
   }
 
   @override
@@ -325,8 +323,8 @@ class _$GeneratedDominoes
       const DeepCollectionEquality().hash(secondDominoDots) ^
       const DeepCollectionEquality().hash(dominoesForAnswer) ^
       const DeepCollectionEquality().hash(correctAnswerPosition) ^
-      const DeepCollectionEquality().hash(isCorrectAnswer) ^
-      const DeepCollectionEquality().hash(scores);
+      const DeepCollectionEquality().hash(scores) ^
+      const DeepCollectionEquality().hash(isCorrectAnswer);
 
   @override
   $GeneratedDominoesCopyWith<GeneratedDominoes> get copyWith =>
@@ -342,13 +340,13 @@ class _$GeneratedDominoes
             List<bool> secondDominoDots,
             List<List<bool>> dominoesForAnswer,
             int correctAnswerPosition,
-            bool isCorrectAnswer,
-            int scores),
+            int scores,
+            bool isCorrectAnswer),
   }) {
     assert(initial != null);
     assert(generatedDominoes != null);
     return generatedDominoes(firstDominoDots, secondDominoDots,
-        dominoesForAnswer, correctAnswerPosition, isCorrectAnswer, scores);
+        dominoesForAnswer, correctAnswerPosition, scores, isCorrectAnswer);
   }
 
   @override
@@ -360,14 +358,14 @@ class _$GeneratedDominoes
         List<bool> secondDominoDots,
         List<List<bool>> dominoesForAnswer,
         int correctAnswerPosition,
-        bool isCorrectAnswer,
-        int scores),
+        int scores,
+        bool isCorrectAnswer),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (generatedDominoes != null) {
       return generatedDominoes(firstDominoDots, secondDominoDots,
-          dominoesForAnswer, correctAnswerPosition, isCorrectAnswer, scores);
+          dominoesForAnswer, correctAnswerPosition, scores, isCorrectAnswer);
     }
     return orElse();
   }
@@ -404,14 +402,14 @@ abstract class GeneratedDominoes implements DominoesGameState {
       @required List<bool> secondDominoDots,
       @required List<List<bool>> dominoesForAnswer,
       @required int correctAnswerPosition,
-      @required bool isCorrectAnswer,
-      @required int scores}) = _$GeneratedDominoes;
+      int scores,
+      bool isCorrectAnswer}) = _$GeneratedDominoes;
 
   List<bool> get firstDominoDots;
   List<bool> get secondDominoDots;
   List<List<bool>> get dominoesForAnswer;
   int get correctAnswerPosition;
-  bool get isCorrectAnswer;
   int get scores;
+  bool get isCorrectAnswer;
   $GeneratedDominoesCopyWith<GeneratedDominoes> get copyWith;
 }

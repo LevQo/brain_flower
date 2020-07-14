@@ -6,14 +6,13 @@ class GameCard extends StatefulWidget {
   final String route;
   final String imageUri;
 
-  const GameCard({this.route, this.imageUri});
+  const GameCard({this.route, @required this.imageUri}) : assert(imageUri != null);
 
   @override
   _GameCardState createState() => _GameCardState();
 }
 
-class _GameCardState extends State<GameCard>
-    with SingleTickerProviderStateMixin {
+class _GameCardState extends State<GameCard> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation _tapAnimation;
 
@@ -29,7 +28,7 @@ class _GameCardState extends State<GameCard>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 

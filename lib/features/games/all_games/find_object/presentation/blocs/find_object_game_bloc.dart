@@ -11,28 +11,28 @@ import 'find_object_game_event.dart';
 
 class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> {
   @override
-  FindObjectGameState get initialState => InitialStateFindObject();
+  FindObjectGameState get initialState => FindObjectGameState.initial();
 
   final _random = Random();
   int _correctAnswerCounter = 0;
 
   @override
   Stream<FindObjectGameState> mapEventToState(FindObjectGameEvent event) async* {
-    if (event is InitStartScreenFindObject) {
+    yield* event.when(initStartScreen: () async* {
       yield* _mapToStartScreen();
-    } else if (event is SelectObjectEvent) {
-      yield* _mapToGeneratedObjectsState(event);
-    }
+    }, selectObject: (object) async* {
+      yield* _mapToGeneratedObjectsState(object);
+    });
   }
 
-  Stream<GeneratedObjectsState> _mapToStartScreen() async* {
+  Stream<FindObjectGameState> _mapToStartScreen() async* {
     final objectToSearch = await _generateRandomObject();
     final objects = await _generateRandomObjects(objectToSearch);
     var colorText;
 
     var typeOfSearch = _random.nextInt(2) == 0 ? FindObjectGameTypes.TEXT : FindObjectGameTypes.COLOR;
 
-    //TODO MOVE TO GLOBAL CONST
+    //TODO: MOVE TO GLOBAL CONST
     var colorsText = [
       'Зеленый',
       'Красный',
@@ -55,7 +55,7 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
       colorText = colorsText[colorIndex];
     }
 
-    yield GeneratedObjectsState(
+    yield FindObjectGameState.generatedObjects(
         objectToSearch: objectToSearch,
         objects: objects,
         typeOfSearch: typeOfSearch,
@@ -64,7 +64,7 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
         isCorrectAnswer: null);
   }
 
-  Stream<GeneratedObjectsState> _mapToGeneratedObjectsState(SelectObjectEvent event) async* {
+  Stream<FindObjectGameState> _mapToGeneratedObjectsState(FindObjectModel object) async* {
     FindObjectModel objectToSearch;
     var objects = <FindObjectModel>[];
     var colorText;
@@ -73,7 +73,7 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
     FindObjectGameTypes typeOfSearch;
 
     var currentState = state;
-    if (currentState is GeneratedObjectsState) {
+    if (currentState is GeneratedObjects) {
       objectToSearch = await _generateRandomObject();
       objects = await _generateRandomObjects(objectToSearch);
 
@@ -98,9 +98,9 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
         var colorIndex = CustomColors.arrayColors.indexOf(objectToSearch.color);
         colorText = colorsText[colorIndex];
 
-        if (event.object.icon == currentState.objectToSearch.icon &&
-            event.object.color == currentState.objectToSearch.color) {
-          var previousColorIndex = CustomColors.arrayColors.indexOf(event.object.color);
+        if (object.icon == currentState.objectToSearch.icon &&
+            object.color == currentState.objectToSearch.color) {
+          var previousColorIndex = CustomColors.arrayColors.indexOf(object.color);
           if (currentState.colorText == colorsText[previousColorIndex]) {
             isCorrectAnswer = true;
           } else {
@@ -111,8 +111,8 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
         var colorIndex = _random.nextInt(colorsText.length);
         colorText = colorsText[colorIndex];
 
-        if (event.object.icon == currentState.objectToSearch.icon &&
-            event.object.color == currentState.objectToSearch.color) {
+        if (object.icon == currentState.objectToSearch.icon &&
+            object.color == currentState.objectToSearch.color) {
           isCorrectAnswer = true;
         } else {
           isCorrectAnswer = false;
@@ -128,7 +128,7 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
       }
     }
 
-    yield GeneratedObjectsState(
+    yield FindObjectGameState.generatedObjects(
         objectToSearch: objectToSearch,
         objects: objects,
         typeOfSearch: typeOfSearch,
@@ -143,6 +143,7 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
     var randomColorIndex = _random.nextInt(colorsSize);
     var color = CustomColors.arrayColors[randomColorIndex];
 
+    //TODO: to refactor
     var iconsArray = [
       Icons.event,
       Icons.brightness_3,
@@ -158,7 +159,7 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
     var randomIconIndex = _random.nextInt(iconsArraySize);
     var icon = iconsArray[randomIconIndex];
 
-    return FindObjectModel(color, icon);
+    return FindObjectModel(color: color, icon: icon);
   }
 
   Future<List<FindObjectModel>> _generateRandomObjects(FindObjectModel objectToSearch) async {

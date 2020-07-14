@@ -1,22 +1,11 @@
 import 'package:brain_flower/features/games/all_games/more_less/data/models/answer_types_more_less.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class MoreLessGameEvent extends Equatable {
-  @override
-  List<Object> get props => [];
+part 'more_less_game_event.freezed.dart';
+
+@freezed
+abstract class MoreLessGameEvent with _$MoreLessGameEvent {
+  const factory MoreLessGameEvent.initStartScreen() = _InitStartScreen;
+
+  const factory MoreLessGameEvent.selectAnswer({@required AnswerTypesMoreLess answerType}) = _SelectAnswer;
 }
-
-class InitStartScreenMoreLess extends MoreLessGameEvent {
-  @override
-  List<Object> get props => super.props;
-}
-
-class SelectAnswerMoreLessEvent extends MoreLessGameEvent {
-  final AnswerTypesMoreLess answerType;
-
-  SelectAnswerMoreLessEvent({this.answerType});
-
-  @override
-  List<Object> get props => super.props;
-}
-

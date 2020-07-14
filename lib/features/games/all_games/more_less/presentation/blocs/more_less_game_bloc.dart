@@ -12,32 +12,26 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
   final _random = Random();
 
   @override
-  MoreLessGameState get initialState => InitialStateMoreLess();
+  MoreLessGameState get initialState => MoreLessGameState.initial();
 
   @override
   Stream<MoreLessGameState> mapEventToState(MoreLessGameEvent event) async* {
-    if (event is SelectAnswerMoreLessEvent) {
-      yield* _mapToGenerateNewAnswerState(event);
-    } else if (event is InitStartScreenMoreLess) {
+    yield* event.when(initStartScreen: () async* {
       yield* _mapToStartScreenState();
-    }
+    }, selectAnswer: (answerType) async* {
+      yield* _mapToGenerateNewAnswerState(answerType);
+    });
   }
 
   Stream<MoreLessGameState> _mapToStartScreenState() async* {
-    _correctAnswerCounter = 0;
-
     String firstNumber = await _generateNumber();
     String secondNumber = await _generateNumber();
 
-    yield GeneratedNumbersMoreLessState(
-        firstNumber: firstNumber,
-        secondNumber: secondNumber,
-        scores: 0,
-        isCorrectAnswer: null);
+    yield MoreLessGameState.generatedNumbers(
+        firstNumber: firstNumber, secondNumber: secondNumber, scores: 0, isCorrectAnswer: null);
   }
 
-  Stream<MoreLessGameState> _mapToGenerateNewAnswerState(
-      SelectAnswerMoreLessEvent event) async* {
+  Stream<MoreLessGameState> _mapToGenerateNewAnswerState(AnswerTypesMoreLess answerType) async* {
     final currentState = state;
 
     String firstNumber = "";
@@ -45,8 +39,8 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
     int score = 0;
     bool isCorrectAnswer = true;
 
-    if (currentState is GeneratedNumbersMoreLessState) {
-      isCorrectAnswer = await _checkAnswer(currentState, event);
+    if (currentState is GeneratedNumbers) {
+      isCorrectAnswer = await _checkAnswer(currentState, answerType);
       if (isCorrectAnswer) {
         score = currentState.scores + kDefaultScoresForAnswer;
         _correctAnswerCounter++;
@@ -61,7 +55,7 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
     firstNumber = await _generateNumber();
     secondNumber = await _generateNumber();
 
-    yield GeneratedNumbersMoreLessState(
+    yield MoreLessGameState.generatedNumbers(
         firstNumber: firstNumber,
         secondNumber: secondNumber,
         scores: score,
@@ -69,7 +63,6 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
   }
 
   Future<String> _generateNumber() async {
-
     String randomNumber = "";
 
     if (_correctAnswerCounter > 5) {
@@ -106,16 +99,15 @@ class MoreLessGameBloc extends Bloc<MoreLessGameEvent, MoreLessGameState> {
     return randomNumber;
   }
 
-  Future<bool> _checkAnswer(GeneratedNumbersMoreLessState currentState,
-      SelectAnswerMoreLessEvent event) async {
+  Future<bool> _checkAnswer(GeneratedNumbers currentState, AnswerTypesMoreLess answerType) async {
     double firstNumber = await _formatNumber(currentState.firstNumber);
     double secondNumber = await _formatNumber(currentState.secondNumber);
 
-    if (event.answerType == AnswerTypesMoreLess.firstNumber) {
+    if (answerType == AnswerTypesMoreLess.firstNumber) {
       return firstNumber > secondNumber;
-    } else if (event.answerType == AnswerTypesMoreLess.secondNumber) {
+    } else if (answerType == AnswerTypesMoreLess.secondNumber) {
       return secondNumber > firstNumber;
-    } else if (event.answerType == AnswerTypesMoreLess.equal) {
+    } else if (answerType == AnswerTypesMoreLess.equal) {
       return firstNumber == secondNumber;
     } else {
       return false;

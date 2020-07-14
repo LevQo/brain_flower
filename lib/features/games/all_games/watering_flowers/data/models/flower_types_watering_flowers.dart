@@ -1,1 +1,1 @@
-enum FlowerTypesWateringFlowers{HEALTHY, WILTED}
+enum FlowerTypesWateringFlowers { HEALTHY, WILTED }

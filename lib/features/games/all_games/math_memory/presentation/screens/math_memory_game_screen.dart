@@ -15,19 +15,16 @@ class MathMemoryGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MathMemoryGameBloc>(
-      create: (context) =>
-          MathMemoryGameBloc()..add(InitStartScreenMathMemory()),
+      create: (context) => MathMemoryGameBloc()..add(MathMemoryGameEvent.initStartScreen()),
       child: Scaffold(
         backgroundColor: CustomColors.backgroundGameDarkColor,
         body: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(Drawables.backgroundMoreLess),
-                fit: BoxFit.cover),
+            image: DecorationImage(image: AssetImage(Drawables.backgroundMoreLess), fit: BoxFit.cover),
           ),
           child: BlocBuilder<MathMemoryGameBloc, MathMemoryGameState>(
             builder: (context, state) {
-              if (state is GeneratedMathCardsState) {
+              if (state is GeneratedMathCards) {
                 return _buildMainContainer(context, state);
               } else {
                 return Container();
@@ -39,8 +36,7 @@ class MathMemoryGameScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMainContainer(
-      BuildContext context, GeneratedMathCardsState state) {
+  Widget _buildMainContainer(BuildContext context, GeneratedMathCards state) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -96,8 +92,7 @@ class MathMemoryCard extends StatelessWidget {
   final bool isNeedToRemember;
   final bool isMemorizedNumber;
 
-  const MathMemoryCard(
-      {@required this.number, this.isNeedToRemember, this.isMemorizedNumber});
+  const MathMemoryCard({@required this.number, this.isNeedToRemember, this.isMemorizedNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -106,16 +101,10 @@ class MathMemoryCard extends StatelessWidget {
       width: context.screenHeight * 0.14,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          boxShadow: [
-            BoxShadow(
-                offset: Offset(0.0, 6.0),
-                color: CustomColors.defaultShadowColor)
-          ],
+          boxShadow: [BoxShadow(offset: Offset(0.0, 6.0), color: CustomColors.defaultShadowColor)],
           color: CustomColors.kCardMathMemoryColor),
       child: Stack(
-        children: isMemorizedNumber
-            ? _buildMemorizedNumberCard()
-            : _buildDefaultCard(),
+        children: isMemorizedNumber ? _buildMemorizedNumberCard() : _buildDefaultCard(),
       ),
     );
   }
@@ -174,8 +163,7 @@ class MathKeyboard extends StatelessWidget {
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: context.screenWidth * 0.2, vertical: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: context.screenWidth * 0.2, vertical: 20.0),
           child: Wrap(
             runAlignment: WrapAlignment.center,
             spacing: context.screenWidth * 0.04,
@@ -209,8 +197,7 @@ class MathKeyButton extends StatefulWidget {
   _MathKeyButtonState createState() => _MathKeyButtonState();
 }
 
-class _MathKeyButtonState extends State<MathKeyButton>
-    with TickerProviderStateMixin {
+class _MathKeyButtonState extends State<MathKeyButton> with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation _colorTween;
 
@@ -228,10 +215,8 @@ class _MathKeyButtonState extends State<MathKeyButton>
 
   void _initAnimation() {
     if (widget.isCorrect) {
-      _animationController = AnimationController(
-          vsync: this, duration: Duration(milliseconds: 500));
-      _colorTween = ColorTween(begin: Colors.green, end: Colors.white)
-          .animate(_animationController);
+      _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+      _colorTween = ColorTween(begin: Colors.green, end: Colors.white).animate(_animationController);
       _animationController.forward();
 
       _animationController.addListener(() {
@@ -242,9 +227,7 @@ class _MathKeyButtonState extends State<MathKeyButton>
 
   @override
   void dispose() {
-    if(_animationController != null){
-      _animationController.dispose();
-    }
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -252,14 +235,11 @@ class _MathKeyButtonState extends State<MathKeyButton>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context
-            .bloc<MathMemoryGameBloc>()
-            .add(ToAnswerMathMemoryEvent(number: widget.number));
+        context.bloc<MathMemoryGameBloc>().add(MathMemoryGameEvent.toAnswer(number: widget.number));
       },
       child: ColorFiltered(
-        colorFilter: ColorFilter.mode(
-            widget.isCorrect ? _colorTween.value : Colors.white,
-            BlendMode.modulate),
+        colorFilter:
+            ColorFilter.mode(widget.isCorrect ? _colorTween.value : Colors.white, BlendMode.modulate),
         child: Container(
           height: context.screenWidth * 0.10,
           width: context.screenWidth * 0.14,

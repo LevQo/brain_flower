@@ -1,22 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class MoreLessGameState {
-  const MoreLessGameState();
-}
+part 'more_less_game_state.freezed.dart';
 
-class InitialStateMoreLess extends MoreLessGameState {
-  const InitialStateMoreLess();
-}
+@freezed
+abstract class MoreLessGameState with _$MoreLessGameState {
+  const factory MoreLessGameState.initial() = _Initial;
 
-class GeneratedNumbersMoreLessState extends MoreLessGameState {
-  final String firstNumber;
-  final String secondNumber;
-  final int scores;
-  final bool isCorrectAnswer;
-
-  const GeneratedNumbersMoreLessState(
-      {@required this.firstNumber,
-      @required this.secondNumber,
-      this.scores,
-      this.isCorrectAnswer});
+  const factory MoreLessGameState.generatedNumbers(
+      {@required String firstNumber,
+      @required String secondNumber,
+      int scores,
+      bool isCorrectAnswer}) = GeneratedNumbers;
 }

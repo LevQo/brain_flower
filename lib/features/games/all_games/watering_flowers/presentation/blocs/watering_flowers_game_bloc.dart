@@ -8,31 +8,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'watering_flowers_game_event.dart';
 
-class WateringFlowersGameBloc
-    extends Bloc<WateringFlowersGameEvent, WateringFlowersGameState> {
+class WateringFlowersGameBloc extends Bloc<WateringFlowersGameEvent, WateringFlowersGameState> {
   final _random = Random();
 
   @override
-  WateringFlowersGameState get initialState =>
-      InitialWateringFlowersGameStateState();
+  WateringFlowersGameState get initialState => WateringFlowersGameState.initial();
 
   @override
-  Stream<WateringFlowersGameState> mapEventToState(
-      WateringFlowersGameEvent event) async* {
-    if (event is InitStartScreenWateringFlowers) {
+  Stream<WateringFlowersGameState> mapEventToState(WateringFlowersGameEvent event) async* {
+    yield* event.when(initStartScreen: () async* {
       yield* _mapEventToStartScreen();
-    } else if (event is ToUpdateFlowerGameEvent) {
-      yield* _mapEventToUpdatedState(event.flower);
-    } else if (event is ToWaterFlowerGameEvent) {
-      yield* _mapEventToWaterFlowerState(event);
-    }
+    }, toWaterFlower: (flower) async* {
+      yield* _mapEventToWaterFlowerState(flower);
+    }, toUpdateFlower: (flower) async* {
+      yield* _mapEventToUpdatedState(flower);
+    });
   }
 
-  Stream<UpdatedWateringFlowersState> _mapEventToStartScreen() async* {
+  Stream<WateringFlowersGameState> _mapEventToStartScreen() async* {
     var flowers = await _generateFlowers();
 
-    yield UpdatedWateringFlowersState(
-        flowers: flowers, scores: 0, isCorrectAnswer: null);
+    yield WateringFlowersGameState.updatedFlower(flowers: flowers, scores: 0, isCorrectAnswer: null);
   }
 
   Future<List<WateringFlowerModel>> _generateFlowers() async {
@@ -40,22 +36,20 @@ class WateringFlowersGameBloc
     for (int i = 0; i < 12; i++) {
       final timeToDownGrade = (1000 + _random.nextInt(10000 - 1000));
       var flower = WateringFlowerModel(
-          FlowerTypesWateringFlowers.HEALTHY, timeToDownGrade, i);
+          type: FlowerTypesWateringFlowers.HEALTHY, timeToDowngrade: timeToDownGrade, position: i);
       flowers.add(flower);
     }
 
     return flowers;
   }
 
-  Stream<UpdatedWateringFlowersState> _mapEventToUpdatedState(
-      WateringFlowerModel flower) async* {
-
+  Stream<WateringFlowersGameState> _mapEventToUpdatedState(WateringFlowerModel flower) async* {
     var flowers = <WateringFlowerModel>[];
     var scores = 0;
     var isCorrectAnswer;
 
     final currentState = state;
-    if (currentState is UpdatedWateringFlowersState) {
+    if (currentState is UpdatedFlower) {
       flowers = currentState.flowers;
       scores = currentState.scores;
       var type = flower.type;
@@ -70,26 +64,24 @@ class WateringFlowersGameBloc
       }
 
       flowers[flower.position] =
-          WateringFlowerModel(type, flower.timeToDowngrade, flower.position);
+          WateringFlowerModel(type: type, timeToDowngrade: flower.timeToDowngrade, position: flower.position);
     }
 
-    yield UpdatedWateringFlowersState(
-        flowers: flowers, scores: scores, isCorrectAnswer: isCorrectAnswer);
+    yield WateringFlowersGameState.updatedFlower(flowers: flowers, scores: scores, isCorrectAnswer: isCorrectAnswer);
   }
 
-  Stream<UpdatedWateringFlowersState> _mapEventToWaterFlowerState(
-      ToWaterFlowerGameEvent event) async* {
+  Stream<WateringFlowersGameState> _mapEventToWaterFlowerState(WateringFlowerModel flower) async* {
     var flowers = <WateringFlowerModel>[];
     var scores = 0;
     var isCorrectAnswer;
     int timeToDowngrade;
 
     final currentState = state;
-    if (currentState is UpdatedWateringFlowersState) {
+    if (currentState is UpdatedFlower) {
       flowers = currentState.flowers;
       scores = currentState.scores;
-      timeToDowngrade = event.flower.timeToDowngrade;
-      var type = event.flower.type;
+      timeToDowngrade = flower.timeToDowngrade;
+      var type = flower.type;
 
       if (type == FlowerTypesWateringFlowers.HEALTHY) {
         if (scores > 0) {
@@ -104,11 +96,10 @@ class WateringFlowersGameBloc
         type = FlowerTypesWateringFlowers.HEALTHY;
       }
 
-      flowers[event.flower.position] =
-          WateringFlowerModel(type, timeToDowngrade, event.flower.position);
+      flowers[flower.position] =
+          WateringFlowerModel(type: type, timeToDowngrade: timeToDowngrade, position: flower.position);
     }
 
-    yield UpdatedWateringFlowersState(
-        flowers: flowers, scores: scores, isCorrectAnswer: isCorrectAnswer);
+    yield WateringFlowersGameState.updatedFlower(flowers: flowers, scores: scores, isCorrectAnswer: isCorrectAnswer);
   }
 }

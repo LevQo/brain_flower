@@ -1,20 +1,9 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class FindNumberGameEvent extends Equatable{
-  @override
-  List<Object> get props => [];
-}
+part 'find_number_game_event.freezed.dart';
 
-class InitStartScreenFindNumber extends FindNumberGameEvent{
-  @override
-  List<Object> get props => super.props;
-}
-
-class SelectNumberFindNumberEvent extends FindNumberGameEvent{
-  final int number;
-
-  SelectNumberFindNumberEvent({this.number});
-
-  @override
-  List<Object> get props => [this.number];
+@freezed
+abstract class FindNumberGameEvent with _$FindNumberGameEvent{
+  const factory FindNumberGameEvent.initStartScreen() = _InitStartScreen;
+  const factory FindNumberGameEvent.selectNumber({@required int number}) = _SelectNumber;
 }

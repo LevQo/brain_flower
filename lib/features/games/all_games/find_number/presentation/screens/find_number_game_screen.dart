@@ -3,6 +3,7 @@ import 'package:brain_flower/core/resources/drawables.dart';
 import 'package:brain_flower/core/widgets/custom_app_bar.dart';
 import 'package:brain_flower/core/widgets/custom_timer.dart';
 import 'package:brain_flower/core/widgets/title_text.dart';
+import 'package:brain_flower/features/games/all_games/find_number/data/models/find_number_model.dart';
 import 'package:brain_flower/features/games/all_games/find_number/presentation/blocs/find_number_game_bloc.dart';
 import 'package:brain_flower/features/games/all_games/find_number/presentation/blocs/find_number_game_event.dart';
 import 'package:brain_flower/features/games/all_games/find_number/presentation/blocs/find_number_game_state.dart';
@@ -14,19 +15,16 @@ class FindNumberGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<FindNumberGameBloc>(
-      create: (context) =>
-          FindNumberGameBloc()..add(InitStartScreenFindNumber()),
+      create: (context) => FindNumberGameBloc()..add(FindNumberGameEvent.initStartScreen()),
       child: Scaffold(
         backgroundColor: CustomColors.backgroundFindNumberColor,
         body: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(Drawables.backgroundMoreLess),
-                fit: BoxFit.cover),
+            image: DecorationImage(image: AssetImage(Drawables.backgroundMoreLess), fit: BoxFit.cover),
           ),
           child: BlocBuilder<FindNumberGameBloc, FindNumberGameState>(
             builder: (context, state) {
-              if (state is GeneratedNumbersFindNumberState) {
+              if (state is GeneratedNumbers) {
                 return _buildMainContainer(state, context);
               } else {
                 return Container();
@@ -38,8 +36,7 @@ class FindNumberGameScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMainContainer(
-      GeneratedNumbersFindNumberState state, BuildContext context) {
+  Widget _buildMainContainer(GeneratedNumbers state, BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
@@ -66,13 +63,12 @@ class FindNumberGameScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TitleText(
-                  text: 'Найдите число: ${state.numberToSearch}',
-                  isCorrectAnswer: state.isCorrectAnswer),
+                  text: 'Найдите число: ${state.numberToSearch}', isCorrectAnswer: state.isCorrectAnswer),
               SizedBox(height: 40.0),
               Wrap(
                   spacing: MediaQuery.of(context).size.width * 0.1,
                   runSpacing: MediaQuery.of(context).size.height * 0.03,
-                  children: _generateNumbers(state))
+                  children: _generateNumbers(state.numbers, context))
             ],
           ),
         ),
@@ -80,15 +76,16 @@ class FindNumberGameScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _generateNumbers(GeneratedNumbersFindNumberState state) {
+  List<Widget> _generateNumbers(List<FindNumberModel> numbers, BuildContext context) {
     List<Widget> numbersList = [];
-    state.numbers.forEach((number) {
+    numbers.forEach((number) {
       var numberWidget = AnimatedNumberFindNumber(
         number: number.number,
         type: number.type,
         color: number.color,
+        onTap: () =>
+            context.bloc<FindNumberGameBloc>().add(FindNumberGameEvent.selectNumber(number: number.number)),
       );
-
       numbersList.add(numberWidget);
     });
     return numbersList;

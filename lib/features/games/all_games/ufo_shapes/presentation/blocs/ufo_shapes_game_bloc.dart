@@ -9,22 +9,22 @@ class UfoShapesGameBloc extends Bloc<UfoShapesGameEvent, UfoShapesGameState> {
   List<Widget> _shapesList = [];
 
   @override
-  UfoShapesGameState get initialState => UfoShapesGameState();
+  UfoShapesGameState get initialState => UfoShapesGameState.addNewShape(shapes: _shapesList);
 
   @override
   Stream<UfoShapesGameState> mapEventToState(UfoShapesGameEvent event) async* {
-    if (event is InitUfoShapesEvent) {
+    yield* event.when(initStartScreen: () async* {
       yield* _startBuildShapes();
-    } else if(event is UfoShapeOnFinishEvent){
+    }, shapeFinish: (shapeFinish) async* {
       yield* _mapToFinishShapeState();
-    }
+    });
   }
 
   Stream<UfoShapesGameState> _startBuildShapes() async* {
-    while(true){
+    while (true) {
       await Future.delayed(Duration(seconds: 2));
       _shapesList.add(ShapeWidget());
-      yield AddNewUfoShapeState(shapes: _shapesList);
+      yield UfoShapesGameState.addNewShape(shapes: _shapesList);
     }
   }
 

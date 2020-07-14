@@ -15,7 +15,7 @@ class MoreLessGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MoreLessGameBloc>(
-      create: (context) => MoreLessGameBloc()..add(InitStartScreenMoreLess()),
+      create: (context) => MoreLessGameBloc()..add(MoreLessGameEvent.initStartScreen()),
       child: Scaffold(
         backgroundColor: CustomColors.backgroundMoreLessColor,
         body: Container(
@@ -26,7 +26,7 @@ class MoreLessGameScreen extends StatelessWidget {
           )),
           child: BlocBuilder<MoreLessGameBloc, MoreLessGameState>(
             builder: (context, state) {
-              if (state is GeneratedNumbersMoreLessState) {
+              if (state is GeneratedNumbers) {
                 return _buildMainContainer(state, context);
               } else {
                 return Container();
@@ -38,18 +38,18 @@ class MoreLessGameScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMainContainer(
-      GeneratedNumbersMoreLessState state, BuildContext context) {
+  Widget _buildMainContainer(GeneratedNumbers state, BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
 //        CustomAppBar(),
         Positioned(
-          right: MediaQuery.of(context).size.width * 0.07,
-          left: MediaQuery.of(context).size.width * 0.07,
-          top: MediaQuery.of(context).size.height * 0.07,
-          child: CustomAppBar(score: state.scores.toString(),)
-        ),
+            right: MediaQuery.of(context).size.width * 0.07,
+            left: MediaQuery.of(context).size.width * 0.07,
+            top: MediaQuery.of(context).size.height * 0.07,
+            child: CustomAppBar(
+              score: state.scores.toString(),
+            )),
         Positioned(
           right: -MediaQuery.of(context).size.width * 0.07,
           bottom: -MediaQuery.of(context).size.height * 0.08,
@@ -93,6 +93,7 @@ class MoreLessGameScreen extends StatelessWidget {
     );
   }
 
+  //TODO: Add result screen
   _showDialog(BuildContext buildContext, int score) {
     showDialog(
         context: buildContext,
@@ -105,7 +106,7 @@ class MoreLessGameScreen extends StatelessWidget {
               new FlatButton(
                 child: new Text("Повторить"),
                 onPressed: () {
-                  buildContext.bloc<MoreLessGameBloc>().add(InitStartScreenMoreLess());
+//                  buildContext.bloc<MoreLessGameBloc>().add(InitStartScreenMoreLess());
                   Navigator.of(context).pop();
                 },
               ),
@@ -131,19 +132,14 @@ class NumberContainerMoreLess extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context
-            .bloc<MoreLessGameBloc>()
-            .add(SelectAnswerMoreLessEvent(answerType: type));
+        context.bloc<MoreLessGameBloc>().add(MoreLessGameEvent.selectAnswer(answerType: type));
       },
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
             color: CustomColors.buttonMoreLessColor,
             boxShadow: [
-              BoxShadow(
-                  color: CustomColors.defaultShadowColor,
-                  offset: Offset(0.0, 4.0),
-                  blurRadius: 10.0)
+              BoxShadow(color: CustomColors.defaultShadowColor, offset: Offset(0.0, 4.0), blurRadius: 10.0)
             ]),
         width: MediaQuery.of(context).size.width * 0.65,
         height: MediaQuery.of(context).size.height * 0.1,

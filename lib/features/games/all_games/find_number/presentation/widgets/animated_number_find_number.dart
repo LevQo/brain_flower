@@ -3,28 +3,23 @@ import 'dart:math';
 
 import 'package:brain_flower/core/resources/colors.dart';
 import 'package:brain_flower/features/games/all_games/find_number/data/models/number_types_find_numbers.dart';
-import 'package:brain_flower/features/games/all_games/find_number/presentation/blocs/find_number_game_bloc.dart';
-import 'package:brain_flower/features/games/all_games/find_number/presentation/blocs/find_number_game_event.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AnimatedNumberFindNumber extends StatefulWidget {
   final NumberTypesFindNumbers type;
   final Color color;
   final int number;
+  final Function onTap;
 
   const AnimatedNumberFindNumber(
-      {@required this.number, @required this.type, @required this.color});
+      {@required this.number, @required this.type, @required this.color, this.onTap});
 
   @override
-  _AnimatedNumberFindNumberState createState() =>
-      _AnimatedNumberFindNumberState();
+  _AnimatedNumberFindNumberState createState() => _AnimatedNumberFindNumberState();
 }
 
-class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
-    with TickerProviderStateMixin {
-  Map<NumberTypesFindNumbers, AnimationController> _animationControllers =
-  HashMap();
+class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber> with TickerProviderStateMixin {
+  Map<NumberTypesFindNumbers, AnimationController> _animationControllers = HashMap(); //TODO: to refactor
   ColorTween _colorTween;
 
   @override
@@ -35,7 +30,7 @@ class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
 
   @override
   void didUpdateWidget(AnimatedNumberFindNumber oldWidget) {
-    _animationControllers.forEach((_, controller){
+    _animationControllers.forEach((_, controller) {
       controller.dispose();
     });
     _initAnimation();
@@ -45,29 +40,17 @@ class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
   _initAnimation() {
     _animationControllers = {
       NumberTypesFindNumbers.SCALE: AnimationController(
-          vsync: this,
-          duration: Duration(milliseconds: 500),
-          lowerBound: 0.5,
-          upperBound: 1.0),
+          vsync: this, duration: Duration(milliseconds: 500), lowerBound: 0.5, upperBound: 1.0),
       NumberTypesFindNumbers.VERTICAL_TRANSLATE: AnimationController(
-          vsync: this,
-          duration: Duration(milliseconds: 500),
-          lowerBound: -5.0,
-          upperBound: 5.0),
+          vsync: this, duration: Duration(milliseconds: 500), lowerBound: -5.0, upperBound: 5.0),
       NumberTypesFindNumbers.HALF_ROTATE: AnimationController(
-          vsync: this,
-          duration: Duration(milliseconds: 1000),
-          lowerBound: -0.1,
-          upperBound: 0.1),
+          vsync: this, duration: Duration(milliseconds: 1000), lowerBound: -0.1, upperBound: 0.1),
       NumberTypesFindNumbers.COLORFUL: AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 500),
       ),
       NumberTypesFindNumbers.OPACITY: AnimationController(
-          vsync: this,
-          duration: Duration(milliseconds: 500),
-          lowerBound: 0.0,
-          upperBound: 1.0)
+          vsync: this, duration: Duration(milliseconds: 500), lowerBound: 0.0, upperBound: 1.0)
     };
 
     if (widget.type == NumberTypesFindNumbers.COLORFUL) {
@@ -90,13 +73,11 @@ class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
 
       controller.forward();
     });
-
-
   }
 
   @override
   void dispose() {
-    _animationControllers.forEach((_, controller){
+    _animationControllers.forEach((_, controller) {
       controller.dispose();
     });
     super.dispose();
@@ -130,21 +111,16 @@ class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
 
   Widget _buildDefaultNumber(Color color) {
     return GestureDetector(
-      onTap: () {
-        context
-            .bloc<FindNumberGameBloc>()
-            .add(SelectNumberFindNumberEvent(number: widget.number));
-      },
+      onTap: () => widget.onTap(),
       child: Container(
         height: MediaQuery.of(context).size.height * 0.05,
         width: MediaQuery.of(context).size.width * 0.2,
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(10.0)),
+        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(10.0)),
         child: Center(
             child: Text(
-              widget.number.toString(),
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
-            )),
+          widget.number.toString(),
+          style: TextStyle(fontSize: 20.0, color: Colors.white),
+        )),
       ),
     );
   }
@@ -153,8 +129,7 @@ class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
     return AnimatedBuilder(
       animation: _animationControllers[NumberTypesFindNumbers.HALF_ROTATE],
       builder: (context, child) => RotationTransition(
-        turns: Tween(begin: 0.0, end: 1.0)
-            .animate(_animationControllers[NumberTypesFindNumbers.HALF_ROTATE]),
+        turns: Tween(begin: 0.0, end: 1.0).animate(_animationControllers[NumberTypesFindNumbers.HALF_ROTATE]),
         child: _buildDefaultNumber(widget.color),
       ),
     );
@@ -172,18 +147,11 @@ class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
 
   Widget _buildTranslateNumber(bool isHorizontal) {
     return AnimatedBuilder(
-      animation:
-      _animationControllers[NumberTypesFindNumbers.VERTICAL_TRANSLATE],
+      animation: _animationControllers[NumberTypesFindNumbers.VERTICAL_TRANSLATE],
       builder: (context, child) => Transform.translate(
         offset: isHorizontal
-            ? Offset(
-            0.0,
-            _animationControllers[NumberTypesFindNumbers.VERTICAL_TRANSLATE]
-                .value)
-            : Offset(
-            _animationControllers[NumberTypesFindNumbers.VERTICAL_TRANSLATE]
-                .value,
-            0.0),
+            ? Offset(0.0, _animationControllers[NumberTypesFindNumbers.VERTICAL_TRANSLATE].value)
+            : Offset(_animationControllers[NumberTypesFindNumbers.VERTICAL_TRANSLATE].value, 0.0),
         child: _buildDefaultNumber(widget.color),
       ),
     );
@@ -193,9 +161,8 @@ class _AnimatedNumberFindNumberState extends State<AnimatedNumberFindNumber>
     return AnimatedBuilder(
       animation: _animationControllers[NumberTypesFindNumbers.COLORFUL],
       builder: (context, child) {
-        return _buildDefaultNumber(_colorTween
-            .animate(_animationControllers[NumberTypesFindNumbers.COLORFUL])
-            .value);
+        return _buildDefaultNumber(
+            _colorTween.animate(_animationControllers[NumberTypesFindNumbers.COLORFUL]).value);
       },
     );
   }

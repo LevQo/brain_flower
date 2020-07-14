@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FindObjectModel {
-  final Color _color;
-  final IconData _icon;
+  final Color color;
+  final IconData icon;
 
-  FindObjectModel(this._color, this._icon);
-
-  IconData get icon => _icon;
-
-  Color get color => _color;
+  const FindObjectModel({@required this.color, @required this.icon});
 }

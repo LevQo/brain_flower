@@ -16,19 +16,16 @@ class FindObjectGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<FindObjectGameBloc>(
-      create: (context) =>
-          FindObjectGameBloc()..add(InitStartScreenFindObject()),
+      create: (context) => FindObjectGameBloc()..add(FindObjectGameEvent.initStartScreen()),
       child: Scaffold(
         backgroundColor: CustomColors.backgroundMoreLessColor,
         body: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(Drawables.backgroundMoreLess),
-                fit: BoxFit.cover),
+            image: DecorationImage(image: AssetImage(Drawables.backgroundMoreLess), fit: BoxFit.cover),
           ),
           child: BlocBuilder<FindObjectGameBloc, FindObjectGameState>(
             builder: (context, state) {
-              if (state is GeneratedObjectsState) {
+              if (state is GeneratedObjects) {
                 return _buildMainContainer(context, state);
               } else {
                 return Container();
@@ -40,8 +37,7 @@ class FindObjectGameScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMainContainer(
-      BuildContext context, GeneratedObjectsState state) {
+  Widget _buildMainContainer(BuildContext context, GeneratedObjects state) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -72,9 +68,7 @@ class FindObjectGameScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(
-                    state.typeOfSearch == FindObjectGameTypes.TEXT
-                        ? Icons.text_fields
-                        : Icons.palette,
+                    state.typeOfSearch == FindObjectGameTypes.TEXT ? Icons.text_fields : Icons.palette,
                     color: Colors.white,
                     size: 20.0,
                   ),
@@ -82,19 +76,14 @@ class FindObjectGameScreen extends StatelessWidget {
                     width: 10.0,
                   ),
                   Text('-',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold)),
+                      style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold)),
                   SizedBox(
                     width: 10.0,
                   ),
                   Text(
                     state.colorText,
                     style: TextStyle(
-                        color: state.objectToSearch.color,
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold),
+                        color: state.objectToSearch.color, fontSize: 24.0, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     width: 4.0,
@@ -119,15 +108,14 @@ class FindObjectGameScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildObjects(
-      BuildContext context, List<FindObjectModel> objects) {
+  List<Widget> _buildObjects(BuildContext context, List<FindObjectModel> objects) {
     var objectWidgets = <Widget>[];
 
     objects.forEach((object) {
       var objectWidget = GestureDetector(
         onTap: () => context.bloc<FindObjectGameBloc>().add(
-              SelectObjectEvent(
-                object: FindObjectModel(object.color, object.icon),
+              FindObjectGameEvent.selectObject(
+                object: FindObjectModel(color: object.color, icon: object.icon),
               ),
             ),
         child: Icon(

@@ -1,24 +1,9 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class MathMemoryGameEvent extends Equatable{
-  @override
-  List<Object> get props => [];
+part 'math_memory_game_event.freezed.dart';
 
-  const MathMemoryGameEvent();
-}
-
-class InitStartScreenMathMemory extends MathMemoryGameEvent{
-  const InitStartScreenMathMemory();
-
-  @override
-  List<Object> get props => super.props;
-}
-
-class ToAnswerMathMemoryEvent extends MathMemoryGameEvent{
-  final int number;
-
-  ToAnswerMathMemoryEvent({this.number});
-
-  @override
-  List<Object> get props => [this.number];
+@freezed
+abstract class MathMemoryGameEvent with _$MathMemoryGameEvent{
+  const factory MathMemoryGameEvent.initStartScreen() = _InitStartScreen;
+  const factory MathMemoryGameEvent.toAnswer({@required int number}) = _ToAnswer;
 }

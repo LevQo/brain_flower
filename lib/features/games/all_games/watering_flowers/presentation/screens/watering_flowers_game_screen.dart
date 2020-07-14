@@ -20,7 +20,7 @@ class WateringFlowersGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<WateringFlowersGameBloc>(
-      create: (context) => WateringFlowersGameBloc()..add(InitStartScreenWateringFlowers()),
+      create: (context) => WateringFlowersGameBloc()..add(WateringFlowersGameEvent.initStartScreen()),
       child: Scaffold(
         backgroundColor: CustomColors.backgroundGameDarkColor,
         body: Container(
@@ -29,7 +29,7 @@ class WateringFlowersGameScreen extends StatelessWidget {
           ),
           child: BlocBuilder<WateringFlowersGameBloc, WateringFlowersGameState>(
             builder: (context, state) {
-              if (state is UpdatedWateringFlowersState) {
+              if (state is UpdatedFlower) {
                 return _buildMainContainer(context, state);
               } else {
                 return Container();
@@ -41,7 +41,7 @@ class WateringFlowersGameScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMainContainer(BuildContext context, UpdatedWateringFlowersState state) {
+  Widget _buildMainContainer(BuildContext context, UpdatedFlower state) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -138,7 +138,9 @@ class _FlowerWateringGameWidgetState extends State<FlowerWateringGameWidget> {
       (Timer timer) {
         if (startTime * 1000 >= widget.flower.timeToDowngrade) {
           timer.cancel();
-          context.bloc<WateringFlowersGameBloc>().add(ToUpdateFlowerGameEvent(widget.flower));
+          context
+              .bloc<WateringFlowersGameBloc>()
+              .add(WateringFlowersGameEvent.toUpdateFlower(flower: widget.flower));
         } else {
           startTime = startTime + 1;
         }
@@ -148,7 +150,7 @@ class _FlowerWateringGameWidgetState extends State<FlowerWateringGameWidget> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -161,7 +163,9 @@ class _FlowerWateringGameWidgetState extends State<FlowerWateringGameWidget> {
     return GestureDetector(
         onTap: () {
           _timer.cancel();
-          context.bloc<WateringFlowersGameBloc>().add(ToWaterFlowerGameEvent(widget.flower));
+          context
+              .bloc<WateringFlowersGameBloc>()
+              .add(WateringFlowersGameEvent.toWaterFlower(flower: widget.flower));
         },
         child: Container(
           height: context.screenHeight * 0.1,

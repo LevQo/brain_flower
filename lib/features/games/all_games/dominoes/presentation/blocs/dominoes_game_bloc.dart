@@ -47,8 +47,6 @@ class DominoesGameBloc extends Bloc<DominoesGameEvent, DominoesGameState> {
     var correctDomino = <bool>[];
     var dominoesForAnswer = <List<bool>>[];
     var scores = 0;
-    var isCorrectAnswer = true;
-
     var currentState = state;
     if (currentState is GeneratedDominoes) {
       firstDominoDots = await _generateRandomDomino();
@@ -56,8 +54,6 @@ class DominoesGameBloc extends Bloc<DominoesGameEvent, DominoesGameState> {
 
       correctDomino = await _generateCorrectDomino(firstDominoDots, secondDominoDots);
       dominoesForAnswer = await _generateDominoesForAnswer(correctDomino);
-
-      isCorrectAnswer = isCorrectAnswer;
 
       if (isCorrectAnswer) {
         scores = currentState.scores + 50;

@@ -9,48 +9,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'find_number_game_event.dart';
 import 'find_number_game_state.dart';
 
-class FindNumberGameBloc
-    extends Bloc<FindNumberGameEvent, FindNumberGameState> {
+class FindNumberGameBloc extends Bloc<FindNumberGameEvent, FindNumberGameState> {
   int _correctAnswerCounter = 0;
   final _random = Random();
 
   @override
-  FindNumberGameState get initialState => InitialStateFindNumber();
+  FindNumberGameState get initialState => FindNumberGameState.initial();
 
   @override
-  Stream<FindNumberGameState> mapEventToState(
-      FindNumberGameEvent event) async* {
-    if (event is SelectNumberFindNumberEvent) {
-      yield* _mapToGeneratedNumbersState(event);
-    } else if (event is InitStartScreenFindNumber) {
+  Stream<FindNumberGameState> mapEventToState(FindNumberGameEvent event) async* {
+    yield* event.when(initStartScreen: () async* {
       yield* _mapToStartScreen();
-    }
+    }, selectNumber: (number) async* {
+      yield* _mapToGeneratedNumbersState(number);
+    });
   }
 
-  Stream<GeneratedNumbersFindNumberState> _mapToStartScreen() async* {
+  Stream<FindNumberGameState> _mapToStartScreen() async* {
     var numbers = await _generateNumbers();
-
 
     var indexNumberToSearch = _random.nextInt(numbers.length);
     var numberToSearch = numbers[indexNumberToSearch].number;
 
-    yield GeneratedNumbersFindNumberState(
-        numberToSearch: numberToSearch,
-        numbers: numbers,
-        scores: 0,
-        isCorrectAnswer: null);
+    yield FindNumberGameState.generatedNumbers(
+        numberToSearch: numberToSearch, numbers: numbers, scores: 0, isCorrectAnswer: null);
   }
 
-  Stream<GeneratedNumbersFindNumberState> _mapToGeneratedNumbersState(
-      SelectNumberFindNumberEvent event) async* {
-    var currentState = state;
-    var random = Random();
-
+  Stream<FindNumberGameState> _mapToGeneratedNumbersState(int number) async* {
     var isCorrectAnswer = true;
     var scores = 0;
 
-    if (currentState is GeneratedNumbersFindNumberState) {
-      isCorrectAnswer = event.number == currentState.numberToSearch;
+    var currentState = state;
+    if (currentState is GeneratedNumbers) {
+      isCorrectAnswer = number == currentState.numberToSearch;
       if (isCorrectAnswer) {
         scores = currentState.scores + kDefaultScoresForAnswer;
         _correctAnswerCounter++;
@@ -63,15 +54,11 @@ class FindNumberGameBloc
     }
 
     var numbers = await _generateNumbers();
-
-    var indexNumberToSearch = random.nextInt(numbers.length);
+    var indexNumberToSearch = _random.nextInt(numbers.length);
     var numberToSearch = numbers[indexNumberToSearch].number;
 
-    yield GeneratedNumbersFindNumberState(
-        numberToSearch: numberToSearch,
-        numbers: numbers,
-        scores: scores,
-        isCorrectAnswer: isCorrectAnswer);
+    yield FindNumberGameState.generatedNumbers(
+        numberToSearch: numberToSearch, numbers: numbers, scores: scores, isCorrectAnswer: isCorrectAnswer);
   }
 
   Future<List<FindNumberModel>> _generateNumbers() async {
@@ -83,26 +70,26 @@ class FindNumberGameBloc
     var maxNumber = 1;
     var countNumberTypes = 7;
 
-    if(_correctAnswerCounter < 2){
+    if (_correctAnswerCounter < 2) {
       countNumbers = 3;
       maxNumber = 100;
       countNumberTypes = 1;
-    } else if(_correctAnswerCounter < 5){
+    } else if (_correctAnswerCounter < 5) {
       countNumbers = 6;
       maxNumber = 500;
       countNumberTypes = 2;
-    } else if(_correctAnswerCounter < 7){
+    } else if (_correctAnswerCounter < 7) {
       countNumbers = 9;
       maxNumber = 1000;
       countNumberTypes = 4;
-    } else if(_correctAnswerCounter < 10){
+    } else if (_correctAnswerCounter < 10) {
       countNumbers = 12;
       maxNumber = 1500;
       countNumberTypes = 5;
-    } else if(_correctAnswerCounter < 13){
+    } else if (_correctAnswerCounter < 13) {
       countNumbers = 15;
       maxNumber = 2500;
-    } else if(_correctAnswerCounter < 15){
+    } else if (_correctAnswerCounter < 15) {
       countNumbers = 18;
       maxNumber = 5000;
     } else {
@@ -115,11 +102,9 @@ class FindNumberGameBloc
       var color = CustomColors.arrayColors[random.nextInt(colorsCount)];
 
       var number = random.nextInt(maxNumber);
-
       while (numbersInt.contains(number)) {
         number = random.nextInt(maxNumber);
       }
-
       numbersInt.add(number);
 
       var type;
@@ -149,7 +134,7 @@ class FindNumberGameBloc
           type = NumberTypesFindNumbers.DEFAULT;
       }
 
-      var numberModel = FindNumberModel(color, number, type);
+      var numberModel = FindNumberModel(color: color, number: number, type: type);
       resultNumbers.add(numberModel);
     }
     return resultNumbers;

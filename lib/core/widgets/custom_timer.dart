@@ -6,15 +6,13 @@ class CustomTimer extends StatefulWidget {
   final Function finishTimerListener;
   final bool isRestart;
 
-  const CustomTimer({Key key, this.finishTimerListener, this.isRestart})
-      : super(key: key);
+  const CustomTimer({this.finishTimerListener, this.isRestart});
 
   @override
   _CustomTimerState createState() => _CustomTimerState();
 }
 
-class _CustomTimerState extends State<CustomTimer>
-    with TickerProviderStateMixin {
+class _CustomTimerState extends State<CustomTimer> with TickerProviderStateMixin {
   AnimationController _controller;
 
   String get timerString {
@@ -36,13 +34,12 @@ class _CustomTimerState extends State<CustomTimer>
       }
     });
 
-    _controller.reverse(
-        from: _controller.value == 0.0 ? 1.0 : _controller.value);
+    _controller.reverse(from: _controller.value == 0.0 ? 1.0 : _controller.value);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -50,8 +47,7 @@ class _CustomTimerState extends State<CustomTimer>
   void didUpdateWidget(CustomTimer oldWidget) {
     if (widget.isRestart) {
       _controller.value = 60;
-      _controller.reverse(
-          from: _controller.value == 0.0 ? 1.0 : _controller.value);
+      _controller.reverse(from: _controller.value == 0.0 ? 1.0 : _controller.value);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -65,10 +61,7 @@ class _CustomTimerState extends State<CustomTimer>
         builder: (context, child) => AutoSizeText(
           timerString,
           maxLines: 1,
-          style: TextStyle(
-              color: CustomColors.timerColor,
-              fontSize: 295.0,
-              fontWeight: FontWeight.w600),
+          style: TextStyle(color: CustomColors.timerColor, fontSize: 295.0, fontWeight: FontWeight.w600),
         ),
       ),
     );

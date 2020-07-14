@@ -25,11 +25,11 @@ class UfoShapesGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<UfoShapesGameBloc>(
-      create: (context) => UfoShapesGameBloc()..add(InitUfoShapesEvent()),
+      create: (context) => UfoShapesGameBloc()..add(UfoShapesGameEvent.initStartScreen()),
       child: Scaffold(
         body: BlocBuilder<UfoShapesGameBloc, UfoShapesGameState>(
           builder: (context, state){
-            if(state is AddNewUfoShapeState){
+            if(state is AddNewShape){
               return Stack(
                 children: <Widget>[
                   ...state.shapes,
@@ -85,7 +85,6 @@ class _ShapeWidgetState extends State<ShapeWidget>
     if (oldWidget.key != widget.key) {
 //      _animationController.reset();
     }
-//    print('asdasd');
     super.didUpdateWidget(oldWidget);
   }
 
@@ -99,7 +98,7 @@ class _ShapeWidgetState extends State<ShapeWidget>
   @override
   Widget build(BuildContext context) {
     _animationController.addStatusListener((status) {
-      context.bloc<UfoShapesGameBloc>()..add(UfoShapeOnFinishEvent(widget));
+      context.bloc<UfoShapesGameBloc>()..add(UfoShapesGameEvent.shapeFinish(widget));
     });
     return AnimatedBuilder(
       animation: _animationController,

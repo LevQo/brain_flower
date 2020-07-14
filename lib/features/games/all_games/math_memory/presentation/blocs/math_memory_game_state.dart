@@ -1,24 +1,16 @@
 import 'package:brain_flower/features/games/all_games/math_memory/data/models/math_game_card_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class MathMemoryGameState {
-  const MathMemoryGameState();
-}
+part 'math_memory_game_state.freezed.dart';
 
-class InitialStateMathMemoryGame extends MathMemoryGameState {
-  const InitialStateMathMemoryGame();
-}
+@freezed
+abstract class MathMemoryGameState with _$MathMemoryGameState {
+  const factory MathMemoryGameState.initial() = _Initial;
 
-class GeneratedMathCardsState extends MathMemoryGameState {
-  final MathGameCardModel currentNumber;
-  final MathGameCardModel nextNumber;
-  final int correctNumber;
-  final int scores;
-  final bool isCorrectAnswer;
-
-  GeneratedMathCardsState(
-      {this.currentNumber,
-      this.nextNumber,
-      this.correctNumber,
-      this.scores,
-      this.isCorrectAnswer});
+  const factory MathMemoryGameState.generatedMathCards(
+      {@required MathGameCardModel currentNumber,
+      @required MathGameCardModel nextNumber,
+      int correctNumber,
+      int scores,
+      bool isCorrectAnswer}) = GeneratedMathCards;
 }

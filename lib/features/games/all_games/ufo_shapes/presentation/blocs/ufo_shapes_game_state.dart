@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class UfoShapesGameState {
-  const UfoShapesGameState();
-}
+part 'ufo_shapes_game_state.freezed.dart';
 
-class AddNewUfoShapeState extends UfoShapesGameState{
-  final List<Widget> shapes;
-
-  const AddNewUfoShapeState({@required this.shapes});
+@freezed
+abstract class UfoShapesGameState with _$UfoShapesGameState {
+  const factory UfoShapesGameState.addNewShape({@required List<Widget> shapes}) = AddNewShape;
 }

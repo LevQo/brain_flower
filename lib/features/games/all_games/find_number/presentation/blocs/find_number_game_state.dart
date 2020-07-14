@@ -1,23 +1,15 @@
 import 'package:brain_flower/features/games/all_games/find_number/data/models/find_number_model.dart';
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class FindNumberGameState {
-  const FindNumberGameState();
-}
+part 'find_number_game_state.freezed.dart';
 
-class InitialStateFindNumber extends FindNumberGameState {
-  const InitialStateFindNumber();
-}
+@freezed
+abstract class FindNumberGameState with _$FindNumberGameState {
+  const factory FindNumberGameState.initial() = _Initial;
 
-class GeneratedNumbersFindNumberState extends FindNumberGameState {
-  final int numberToSearch;
-  final List<FindNumberModel> numbers;
-  final int scores;
-  final bool isCorrectAnswer;
-
-  GeneratedNumbersFindNumberState(
-      {@required this.numberToSearch,
-      @required this.numbers,
-      this.scores,
-      this.isCorrectAnswer});
+  const factory FindNumberGameState.generatedNumbers(
+      {@required int numberToSearch,
+      @required List<FindNumberModel> numbers,
+      int scores,
+      bool isCorrectAnswer}) = GeneratedNumbers;
 }

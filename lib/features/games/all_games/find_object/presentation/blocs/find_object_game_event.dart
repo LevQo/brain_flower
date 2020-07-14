@@ -1,24 +1,10 @@
 import 'package:brain_flower/features/games/all_games/find_object/data/models/find_object_model.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class FindObjectGameEvent extends Equatable {
-  const FindObjectGameEvent();
+part 'find_object_game_event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class InitStartScreenFindObject extends FindObjectGameEvent {
-  @override
-  List<Object> get props => super.props;
-}
-
-class SelectObjectEvent extends FindObjectGameEvent {
-  final FindObjectModel object;
-
-  SelectObjectEvent({this.object});
-
-  @override
-  List<Object> get props => [this.object];
+@freezed
+abstract class FindObjectGameEvent with _$FindObjectGameEvent{
+  const factory FindObjectGameEvent.initStartScreen() = _InitStartScreen;
+  const factory FindObjectGameEvent.selectObject({@required FindObjectModel object}) = _SelectObject;
 }

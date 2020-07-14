@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class UfoShapesGameEvent{
-  const UfoShapesGameEvent();
-}
+part 'ufo_shapes_game_event.freezed.dart';
 
-class InitUfoShapesEvent extends UfoShapesGameEvent{
-  const InitUfoShapesEvent();
-}
+@freezed
+abstract class UfoShapesGameEvent with _$UfoShapesGameEvent {
+  const factory UfoShapesGameEvent.initStartScreen() = _InitStartScreen;
 
-class UfoShapeOnFinishEvent extends UfoShapesGameEvent{
-  final Widget shape;
-
-  const UfoShapeOnFinishEvent(this.shape);
+  const factory UfoShapesGameEvent.shapeFinish(Widget shape) = ShapeFinish; //TODO remove [Widget]
 }

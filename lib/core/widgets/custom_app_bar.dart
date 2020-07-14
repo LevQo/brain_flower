@@ -20,8 +20,7 @@ class CustomAppBar extends StatelessWidget {
         ),
         Text(
           score,
-          style: TextStyle(
-              fontSize: 24.0, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24.0, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         Icon(
           Icons.pause,

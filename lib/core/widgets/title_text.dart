@@ -28,19 +28,14 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
   }
 
   void _initAnimation() {
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
-
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
     if (widget.isCorrectAnswer != null) {
       if (widget.isCorrectAnswer) {
-        _colorTween = ColorTween(begin: Colors.green[400], end: Colors.white)
-            .animate(_animationController);
+        _colorTween = ColorTween(begin: Colors.green[400], end: Colors.white).animate(_animationController);
       } else {
-        _colorTween = ColorTween(begin: Colors.red, end: Colors.white)
-            .animate(_animationController);
+        _colorTween = ColorTween(begin: Colors.red, end: Colors.white).animate(_animationController);
       }
     }
-
     _animationController.forward();
     _animationController.addListener(() {
       setState(() {});
@@ -49,7 +44,7 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -74,9 +69,7 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
             widget.text,
             textAlign: TextAlign.center,
             maxLines: 1,
-            style: TextStyle(
-                color: !isDefaultColor ? _colorTween.value : Colors.white,
-                fontSize: 24.0),
+            style: TextStyle(color: !isDefaultColor ? _colorTween.value : Colors.white, fontSize: 24.0),
           ),
         ),
 //        SizedBox(height: 8.0,),
