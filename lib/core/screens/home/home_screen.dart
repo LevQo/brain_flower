@@ -1,9 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:brain_flower/core/blocs/home/home_bloc.dart';
 import 'package:brain_flower/core/blocs/home/home_event.dart';
 import 'package:brain_flower/core/blocs/home/home_state.dart';
 import 'package:brain_flower/core/resources/colors.dart';
-import 'package:brain_flower/core/resources/routes.dart';
 import 'package:brain_flower/core/resources/themes.dart';
+import 'package:brain_flower/core/routes/router.gr.dart';
 import 'package:brain_flower/features/games/all_games/dominoes/presentation/screens/dominoes_game_screen.dart';
 import 'package:brain_flower/features/games/all_games/find_number/presentation/screens/find_number_game_screen.dart';
 import 'package:brain_flower/features/games/all_games/find_object/presentation/screens/find_object_game_screen.dart';
@@ -27,25 +28,7 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeBloc(),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Brain Flower',
-            theme: appThemeData[AppTheme.LightTheme],
-            darkTheme: appThemeData[AppTheme.DarkTheme],
-            routes: {
-              Routes.homeScreen: (context) => HomeScreen(),
-              Routes.gamesScreen: (context) => GamesScreen(),
-              Routes.settingsScreen: (context) => SettingsScreen(),
-              Routes.moreLessGame: (context) => MoreLessGameScreen(),
-              Routes.findNumberGame: (context) => FindNumberGameScreen(),
-              Routes.dominoesGame: (context) => DominoesGameScreen(),
-              Routes.findObjectGame: (context) => FindObjectGameScreen(),
-              Routes.wateringFlowers: (context) => WateringFlowersGameScreen(),
-              Routes.mathMemoryGame: (context) => MathMemoryGameScreen(),
-              Routes.ufoShapesGame: (context) => UfoShapesGameScreen(),
-            },
-            home: _buildHomeScaffold(context, state.screenIndex),
-          );
+          return _buildHomeScaffold(context, state.screenIndex);
         },
       ),
     );

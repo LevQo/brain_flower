@@ -3,8 +3,8 @@ import 'package:brain_flower/core/blocs/animations/header_animation_bloc.dart';
 import 'package:brain_flower/core/blocs/animations/header_animation_state.dart';
 import 'package:brain_flower/core/resources/animations.dart';
 import 'package:brain_flower/core/resources/drawables.dart';
-import 'package:brain_flower/core/resources/routes.dart';
 import 'package:brain_flower/core/resources/text_styles.dart';
+import 'package:brain_flower/core/routes/router.gr.dart';
 import 'package:brain_flower/features/games/data/models/game_types.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +154,7 @@ class _GamesScreenState extends State<GamesScreen> {
                 ? Drawables.moreLessCardLight
                 : Drawables.moreLessCardDark);
         games.add(
-            Routes.wateringFlowers,
+            Routes.wateringFlowersGame,
             isLightThemeMode
                 ? Drawables.wateringFlowersCardLight
                 : Drawables.wateringFlowersCardDark);
