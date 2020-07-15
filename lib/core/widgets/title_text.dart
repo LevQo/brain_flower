@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:brain_flower/core/resources/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:brain_flower/core/utils/extensions.dart';
 
 class TitleText extends StatefulWidget {
   final bool isCorrectAnswer;
@@ -14,6 +16,7 @@ class TitleText extends StatefulWidget {
 class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation _colorTween;
+  Color _textColor = Colors.white;
 
   @override
   void initState() {
@@ -31,9 +34,9 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
     if (widget.isCorrectAnswer != null) {
       if (widget.isCorrectAnswer) {
-        _colorTween = ColorTween(begin: Colors.green[400], end: Colors.white).animate(_animationController);
+        _colorTween = ColorTween(begin: Colors.green[400], end: _textColor).animate(_animationController);
       } else {
-        _colorTween = ColorTween(begin: Colors.red, end: Colors.white).animate(_animationController);
+        _colorTween = ColorTween(begin: Colors.red, end: _textColor).animate(_animationController);
       }
     }
     _animationController.forward();
@@ -50,14 +53,17 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return _animationController != null && _colorTween != null
-        ? AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              return _buildText(false);
-            },
-          )
-        : _buildText(true);
+    if (context.isLightThemeMode) _textColor = CustomColors.defaultTextColor;
+    return _animationController != null && _colorTween != null ? _buildAnimationText() : _buildText(true);
+  }
+
+  AnimatedBuilder _buildAnimationText() {
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return _buildText(false);
+      },
+    );
   }
 
   Widget _buildText(bool isDefaultColor) {
@@ -69,15 +75,9 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
             widget.text,
             textAlign: TextAlign.center,
             maxLines: 1,
-            style: TextStyle(color: !isDefaultColor ? _colorTween.value : Colors.white, fontSize: 24.0),
+            style: TextStyle(color: !isDefaultColor ? _colorTween.value : _textColor, fontSize: 24.0),
           ),
         ),
-//        SizedBox(height: 8.0,),
-//        Container(
-//          width: MediaQuery.of(context).size.width * 0.8,
-//          height: 1.0,
-//          color: Colors.white,
-//        )
       ],
     );
   }

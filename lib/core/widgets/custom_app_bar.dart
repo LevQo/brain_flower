@@ -1,4 +1,6 @@
+import 'package:brain_flower/core/resources/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:brain_flower/core/utils/extensions.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String score;
@@ -7,6 +9,7 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = context.isLightThemeMode ? CustomColors.appBarWidgetsColor : Colors.white;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
@@ -15,17 +18,14 @@ class CustomAppBar extends StatelessWidget {
           onTap: () => Navigator.pop(context),
           child: Icon(
             Icons.arrow_back_ios,
-            color: Colors.white,
+            color: color,
           ),
         ),
         Text(
           score,
-          style: TextStyle(fontSize: 24.0, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24.0, color: color, fontWeight: FontWeight.bold),
         ),
-        Icon(
-          Icons.pause,
-          color: Colors.white,
-        ),
+//        Icon(Icons.pause, color: color), TODO: ADD PAUSE
       ],
     );
   }

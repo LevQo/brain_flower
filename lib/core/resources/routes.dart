@@ -1,3 +1,4 @@
+@deprecated
 class Routes{
   const Routes._();
 

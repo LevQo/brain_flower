@@ -93,13 +93,14 @@ class Router extends RouterBase {
           settings: settings,
         );
       case Routes.resultGame:
-        if (hasInvalidArgs<ResultGameScreenArguments>(args)) {
+        if (hasInvalidArgs<ResultGameScreenArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<ResultGameScreenArguments>(args);
         }
-        final typedArgs =
-            args as ResultGameScreenArguments ?? ResultGameScreenArguments();
+        final typedArgs = args as ResultGameScreenArguments;
         return MaterialPageRoute<dynamic>(
-          builder: (context) => ResultGameScreen(scores: typedArgs.scores),
+          builder: (context) => ResultGameScreen(
+              scores: typedArgs.scores,
+              routeForRestart: typedArgs.routeForRestart),
           settings: settings,
         );
       default:
@@ -115,5 +116,6 @@ class Router extends RouterBase {
 //ResultGameScreen arguments holder class
 class ResultGameScreenArguments {
   final int scores;
-  ResultGameScreenArguments({this.scores = 0});
+  final String routeForRestart;
+  ResultGameScreenArguments({this.scores = 0, @required this.routeForRestart});
 }

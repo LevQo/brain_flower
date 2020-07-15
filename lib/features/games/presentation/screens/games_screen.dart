@@ -30,8 +30,7 @@ class _GamesScreenState extends State<GamesScreen> {
       ..addListener(() {
         if (_scrollController.offset < 0 && _animationBloc.state.isPaused) {
           _animationBloc.add(false);
-        } else if (_scrollController.offset >= 0 &&
-            !_animationBloc.state.isPaused) {
+        } else if (_scrollController.offset >= 0 && !_animationBloc.state.isPaused) {
           _animationBloc.add(true);
         }
       });
@@ -44,7 +43,7 @@ class _GamesScreenState extends State<GamesScreen> {
       fit: StackFit.expand,
       children: <Widget>[
         Align(
-          alignment: Alignment.topCenter,
+          alignment: Alignment(0.0, -1.05),
           child: BlocBuilder<HeaderAnimationBloc, HeaderAnimationState>(
             bloc: _animationBloc,
             builder: (context, state) {
@@ -112,7 +111,7 @@ class _GamesScreenState extends State<GamesScreen> {
     final List<Widget> widgets = [];
     final List<Widget> rowChildren = [];
 
-    ///key is route, value is imageUri
+    /// key is route, value is imageUri
     final Multimap<String, String> games = Multimap<String, String>();
     String title;
 
@@ -121,57 +120,31 @@ class _GamesScreenState extends State<GamesScreen> {
     switch (gameType) {
       case GameTypes.THINKING:
         games.add(
-            Routes.moreLessGame,
-            isLightThemeMode
-                ? Drawables.moreLessCardLight
-                : Drawables.moreLessCardDark);
+            Routes.moreLessGame, isLightThemeMode ? Drawables.moreLessCardLight : Drawables.moreLessCardDark);
         games.add(
-            Routes.dominoesGame,
-            isLightThemeMode
-                ? Drawables.dominoesCardLight
-                : Drawables.dominoesCardDark);
+            Routes.dominoesGame, isLightThemeMode ? Drawables.dominoesCardLight : Drawables.dominoesCardDark);
         title = 'Мышление';
         break;
 
       case GameTypes.MEMORY:
-        games.add(
-            Routes.mathMemoryGame,
-            isLightThemeMode
-                ? Drawables.mathMemoryCardLight
-                : Drawables.mathMemoryCardDark);
-        games.add(
-            '/',
-            isLightThemeMode
-                ? Drawables.moreLessCardLight
-                : Drawables.moreLessCardDark);
+        games.add(Routes.mathMemoryGame,
+            isLightThemeMode ? Drawables.mathMemoryCardLight : Drawables.mathMemoryCardDark);
+        games.add('/', isLightThemeMode ? Drawables.moreLessCardLight : Drawables.moreLessCardDark);
         title = 'Память';
         break;
 
       case GameTypes.REACTION:
-        games.add(
-            '/',
-            isLightThemeMode
-                ? Drawables.moreLessCardLight
-                : Drawables.moreLessCardDark);
-        games.add(
-            Routes.wateringFlowersGame,
-            isLightThemeMode
-                ? Drawables.wateringFlowersCardLight
-                : Drawables.wateringFlowersCardDark);
+        games.add('/', isLightThemeMode ? Drawables.moreLessCardLight : Drawables.moreLessCardDark);
+        games.add(Routes.wateringFlowersGame,
+            isLightThemeMode ? Drawables.wateringFlowersCardLight : Drawables.wateringFlowersCardDark);
         title = 'Реакция';
         break;
 
       case GameTypes.ATTENTION:
-        games.add(
-            Routes.findNumberGame,
-            isLightThemeMode
-                ? Drawables.findNumberCardLight
-                : Drawables.findNumberCardDark);
-        games.add(
-            Routes.findObjectGame,
-            isLightThemeMode
-                ? Drawables.findObjectCardLight
-                : Drawables.findObjectCardDark);
+        games.add(Routes.findNumberGame,
+            isLightThemeMode ? Drawables.findNumberCardLight : Drawables.findNumberCardDark);
+        games.add(Routes.findObjectGame,
+            isLightThemeMode ? Drawables.findObjectCardLight : Drawables.findObjectCardDark);
         title = 'Внимание';
         break;
     }

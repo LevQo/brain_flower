@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Brain Flower',
       theme: appThemeData[AppTheme.LightTheme],
       darkTheme: appThemeData[AppTheme.DarkTheme],
-//      builder: ExtendedNavigator<Router>(router: Router()),
+      builder: ExtendedNavigator<Router>(router: Router()),
 //            routes: {
 //              Routes.homeScreen: (context) => HomeScreen(),
 //              Routes.gamesScreen: (context) => GamesScreen(),
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 //              Routes.mathMemoryGame: (context) => MathMemoryGameScreen(),
 //              Routes.ufoShapesGame: (context) => UfoShapesGameScreen(),
 //            },
-      home: ResultGameScreen(),
+//      home: ResultGameScreen(),
     );
   }
 }

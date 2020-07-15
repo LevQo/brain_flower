@@ -12,9 +12,6 @@ class CustomTextStyle {
   }
 
   static TextStyle headerTitle() {
-    return TextStyle(
-        fontSize: 34.0,
-        color: Colors.white,
-        fontWeight: FontWeight.bold);
+    return TextStyle(fontSize: 34.0, color: Colors.white, fontWeight: FontWeight.bold);
   }
 }

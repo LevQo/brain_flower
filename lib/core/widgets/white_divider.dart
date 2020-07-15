@@ -1,10 +1,12 @@
+import 'package:brain_flower/core/resources/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:brain_flower/core/utils/extensions.dart';
 
-class WhiteDivider extends StatelessWidget {
+class GameDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: context.isLightThemeMode ? CustomColors.defaultTextColor : Colors.white,
       width: MediaQuery.of(context).size.width * 0.8,
       height: 1.0,
     );

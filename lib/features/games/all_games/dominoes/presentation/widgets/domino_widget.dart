@@ -58,7 +58,7 @@ class Domino extends StatelessWidget {
         ? Container(
             height: MediaQuery.of(context).size.width * 0.04,
             width: MediaQuery.of(context).size.width * 0.04,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.purpleAccent),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: CustomColors.dominoDotColor),
           )
         : Container(
             height: MediaQuery.of(context).size.width * 0.04,

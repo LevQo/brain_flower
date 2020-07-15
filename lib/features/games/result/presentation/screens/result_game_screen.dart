@@ -1,13 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brain_flower/core/resources/colors.dart';
 import 'package:brain_flower/core/resources/text_styles.dart';
+import 'package:brain_flower/core/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:brain_flower/core/utils/extensions.dart';
 
 class ResultGameScreen extends StatelessWidget {
   final int scores;
+  final String routeForRestart;
 
-  const ResultGameScreen({this.scores = 0});
+  const ResultGameScreen({this.scores = 0, @required this.routeForRestart});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,7 @@ class ResultGameScreen extends StatelessWidget {
                 maxFontSize: 30.0,
               ),
               AutoSizeText(
-                '12312',
+                '$scores',
                 style: CustomTextStyle.defaultText(context)
                     .copyWith(fontSize: 40.0, fontWeight: FontWeight.bold),
                 maxLines: 1,
@@ -51,30 +54,39 @@ class ResultGameScreen extends StatelessWidget {
               SizedBox(height: context.screenHeight * 0.4),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: context.screenWidth * 0.15),
-                child: Container(
-                  height: context.screenHeight * 0.1,
-                  decoration: BoxDecoration(
-                      color: CustomColors.greenLayerBackgroundColor,
-                      borderRadius: BorderRadius.circular(30.0),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 6.0,
-                          color: CustomColors.defaultShadowColor,
-                          offset: Offset(0.0, 6.0),
-                        )
-                      ]),
-                  child: Center(
-                    child: Text(
-                      'ПЕРЕИГРАТЬ',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0),
+                child: GestureDetector(
+                  onTap: () => ExtendedNavigator.of(context).pushNamedAndRemoveUntil(
+                    routeForRestart,
+                    ModalRoute.withName(Routes.home),
+                  ),
+                  child: Container(
+                    height: context.screenHeight * 0.1,
+                    decoration: BoxDecoration(
+                        color: CustomColors.greenLayerBackgroundColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 6.0,
+                            color: CustomColors.defaultShadowColor,
+                            offset: Offset(0.0, 6.0),
+                          )
+                        ]),
+                    child: Center(
+                      child: Text(
+                        'ПЕРЕИГРАТЬ',
+                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      ),
                     ),
                   ),
                 ),
               ),
               SizedBox(height: context.screenHeight * 0.03),
-              Text(
-                'Выйти',
-                style: CustomTextStyle.defaultText(context).copyWith(decoration: TextDecoration.underline),
+              GestureDetector(
+                onTap: () => ExtendedNavigator.of(context).pop(),
+                child: Text(
+                  'Выйти',
+                  style: CustomTextStyle.defaultText(context).copyWith(decoration: TextDecoration.underline),
+                ),
               )
             ],
           ),

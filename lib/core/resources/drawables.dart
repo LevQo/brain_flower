@@ -1,7 +1,10 @@
 class Drawables{
   const Drawables._();
 
-  //Games Screen
+  // Games Screen
+  static const String gamesBackgroundLight = 'assets/images/games_background_light.png';
+  static const String gamesBackgroundDark = 'assets/images/games_background_dark.png';
+
   static const String moreLessCardLight = 'assets/images/more_less_card_light.png';
   static const String moreLessCardDark = 'assets/images/more_less_card_dark.png';
 
