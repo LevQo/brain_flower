@@ -42,7 +42,7 @@ class _CustomTimerState extends State<CustomTimer> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.45,
+      height: context.screenHeight * 0.45,
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) => AutoSizeText(

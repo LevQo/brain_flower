@@ -31,7 +31,7 @@ class _FlowerWateringGameWidgetState extends State<FlowerWateringGameWidget> {
 
   @override
   void didUpdateWidget(FlowerWateringGameWidget oldWidget) {
-    if (oldWidget.flower.type != widget.flower.type) {
+    if (oldWidget.flower.type != widget.flower.type) { // TODO: Refactoring
       _initTimer();
     }
     super.didUpdateWidget(oldWidget);

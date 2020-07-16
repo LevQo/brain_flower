@@ -52,7 +52,7 @@ class MoreLessGameScreen extends StatelessWidget {
       routeName: Routes.moreLessGame,
       gameContent: FractionallySizedBox(
         alignment: Alignment.center,
-        widthFactor: MediaQuery.of(context).size.width,
+        widthFactor: context.screenWidth,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

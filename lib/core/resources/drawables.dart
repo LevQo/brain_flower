@@ -26,8 +26,8 @@ class Drawables{
   static const String ufoShapesCardLight = 'assets/images/shapes_game_card_light.png';
   static const String ufoShapesCardDark = 'assets/images/shapes_game_card_dark.png';
 
-  //More Less Game
-  static const String backgroundMoreLess = "assets/images/background_more_less.png";
+  static const String soonGameCardLight = 'assets/images/soon_game_card_light.png';
+  static const String soonGameCardDark = 'assets/images/soon_game_card_dark.png';
 
   //Watering Flowers Game
   static const String healthyFlower = "assets/images/healthy_flower_game.svg";

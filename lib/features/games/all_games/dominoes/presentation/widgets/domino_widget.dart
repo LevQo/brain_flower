@@ -1,4 +1,5 @@
 import 'package:brain_flower/core/resources/colors.dart';
+import 'package:brain_flower/core/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class Domino extends StatelessWidget {
@@ -9,8 +10,8 @@ class Domino extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.2,
-      height: MediaQuery.of(context).size.width * 0.2,
+      width: context.screenWidth * 0.2,
+      height: context.screenWidth * 0.2,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14.0),
           boxShadow: [
@@ -54,15 +55,16 @@ class Domino extends StatelessWidget {
   }
 
   Container _buildDominoDot(BuildContext context, bool isVisible) {
+    final sideSize = context.screenWidth * 0.04;
     return isVisible
         ? Container(
-            height: MediaQuery.of(context).size.width * 0.04,
-            width: MediaQuery.of(context).size.width * 0.04,
+            height: sideSize,
+            width: sideSize,
             decoration: BoxDecoration(shape: BoxShape.circle, color: CustomColors.dominoDotColor),
           )
         : Container(
-            height: MediaQuery.of(context).size.width * 0.04,
-            width: MediaQuery.of(context).size.width * 0.04,
+            height: sideSize,
+            width: sideSize,
             color: Colors.white,
           );
   }

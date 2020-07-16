@@ -50,7 +50,7 @@ class WateringFlowersGameScreen extends StatelessWidget {
     return GameContainer(
       scores: state.scores,
       isCorrectAnswer: state.isCorrectAnswer,
-      routeName: Routes.dominoesGame,
+      routeName: Routes.wateringFlowersGame,
       gameContent: Positioned(
         top: context.screenHeight * 0.2,
         right: context.screenWidth * 0.01,
@@ -64,7 +64,7 @@ class WateringFlowersGameScreen extends StatelessWidget {
             SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: FutureBuilder<List<Widget>>(
+              child: FutureBuilder<List<Widget>>( // TODO: Refactoring to StreamBuilder
                 future: _buildFlowers(state.flowers, context),
                 builder: (context, snapshot) {
                   return Wrap(

@@ -25,6 +25,8 @@ class CustomColors {
   static const Color backgroundGameDarkColor = Color(0xFF26272A);
   static const Color bottomNavigationDarkColor = Color(0xFF26272A);
 
+  static const Color gameResultContainerDarkColor = Color(0xFF2B2D31);
+
   static const Color defaultTextColor = Color(0xFF676570);
   static const Color defaultShadowColor = Color(0x33110D1C);
   static const Color shadowDarkColor = Color(0x1A110D1C);

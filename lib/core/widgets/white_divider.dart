@@ -7,7 +7,7 @@ class GameDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: context.isLightThemeMode ? CustomColors.defaultTextColor : Colors.white,
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: context.screenHeight * 0.8,
       height: 1.0,
     );
   }

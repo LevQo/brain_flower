@@ -1,22 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:brain_flower/core/blocs/home/home_bloc.dart';
 import 'package:brain_flower/core/blocs/home/home_event.dart';
 import 'package:brain_flower/core/blocs/home/home_state.dart';
 import 'package:brain_flower/core/resources/colors.dart';
-import 'package:brain_flower/core/resources/themes.dart';
-import 'package:brain_flower/core/routes/router.gr.dart';
-import 'package:brain_flower/features/games/all_games/dominoes/presentation/screens/dominoes_game_screen.dart';
-import 'package:brain_flower/features/games/all_games/find_number/presentation/screens/find_number_game_screen.dart';
-import 'package:brain_flower/features/games/all_games/find_object/presentation/screens/find_object_game_screen.dart';
-import 'package:brain_flower/features/games/all_games/math_memory/presentation/screens/math_memory_game_screen.dart';
-import 'package:brain_flower/features/games/all_games/more_less/presentation/screens/more_less_game_screen.dart';
-import 'package:brain_flower/features/games/all_games/ufo_shapes/presentation/screens/ufo_shapes_game_screen.dart';
-import 'package:brain_flower/features/games/all_games/watering_flowers/presentation/screens/watering_flowers_game_screen.dart';
+import 'package:brain_flower/core/utils/extensions.dart';
 import 'package:brain_flower/features/games/presentation/screens/games_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:brain_flower/core/utils/extensions.dart';
 
 import '../../../features/settings/presentation/screens/settings_screen.dart';
 
@@ -55,7 +45,7 @@ class HomeScreen extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: Text('Настройки'),
+            title: Text('...'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.build),

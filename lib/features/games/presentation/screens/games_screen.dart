@@ -129,12 +129,12 @@ class _GamesScreenState extends State<GamesScreen> {
       case GameTypes.MEMORY:
         games.add(Routes.mathMemoryGame,
             isLightThemeMode ? Drawables.mathMemoryCardLight : Drawables.mathMemoryCardDark);
-        games.add('/', isLightThemeMode ? Drawables.moreLessCardLight : Drawables.moreLessCardDark);
+        games.add('/', isLightThemeMode ? Drawables.soonGameCardLight : Drawables.soonGameCardDark);
         title = 'Память';
         break;
 
       case GameTypes.REACTION:
-        games.add('/', isLightThemeMode ? Drawables.moreLessCardLight : Drawables.moreLessCardDark);
+        games.add('/', isLightThemeMode ? Drawables.soonGameCardLight : Drawables.soonGameCardDark);
         games.add(Routes.wateringFlowersGame,
             isLightThemeMode ? Drawables.wateringFlowersCardLight : Drawables.wateringFlowersCardDark);
         title = 'Реакция';

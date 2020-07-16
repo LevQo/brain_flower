@@ -26,7 +26,9 @@ class ResultGameScreen extends StatelessWidget {
           height: context.screenHeight * 0.9,
           width: context.screenWidth * 0.9,
           decoration: BoxDecoration(
-              color: CustomColors.backgroundLightColor,
+              color: context.isLightThemeMode
+                  ? CustomColors.backgroundLightColor
+                  : CustomColors.gameResultContainerDarkColor,
               borderRadius: BorderRadius.circular(30.0),
               boxShadow: [
                 BoxShadow(

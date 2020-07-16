@@ -50,9 +50,9 @@ class DominoesGameScreen extends StatelessWidget {
       isCorrectAnswer: state.isCorrectAnswer,
       routeName: Routes.dominoesGame,
       gameContent: Positioned(
-        top: MediaQuery.of(context).size.height * 0.2,
-        right: MediaQuery.of(context).size.width * 0.01,
-        left: MediaQuery.of(context).size.width * 0.01,
+        top: context.screenHeight * 0.2,
+        right: context.screenWidth * 0.01,
+        left: context.screenWidth * 0.01,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

@@ -1,5 +1,6 @@
 import 'package:brain_flower/core/resources/colors.dart';
 import 'package:brain_flower/features/games/all_games/more_less/data/models/answer_types_more_less.dart';
+import 'package:brain_flower/core/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class NumberContainerMoreLess extends StatelessWidget {
@@ -20,8 +21,8 @@ class NumberContainerMoreLess extends StatelessWidget {
             boxShadow: [
               BoxShadow(color: CustomColors.defaultShadowColor, offset: Offset(0.0, 4.0), blurRadius: 10.0)
             ]),
-        width: MediaQuery.of(context).size.width * 0.65,
-        height: MediaQuery.of(context).size.height * 0.1,
+        width: context.screenWidth * 0.65,
+        height: context.screenHeight * 0.1,
         child: Center(
           child: Text(
             text,

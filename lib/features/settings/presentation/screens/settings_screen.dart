@@ -10,7 +10,7 @@ class SettingsScreen extends StatelessWidget {
           Text('Ночной режим'),
           CupertinoSwitch(
             onChanged: (isActive) {
-
+              // TODO: Add switch themes logic
             },
             value: false,
           ),

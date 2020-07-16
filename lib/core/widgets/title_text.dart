@@ -40,9 +40,6 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
       }
     }
     _animationController.forward();
-    _animationController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -70,7 +67,7 @@ class _TitleTextState extends State<TitleText> with TickerProviderStateMixin {
     return Column(
       children: <Widget>[
         Container(
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: context.screenWidth * 0.8,
           child: AutoSizeText(
             widget.text,
             textAlign: TextAlign.center,

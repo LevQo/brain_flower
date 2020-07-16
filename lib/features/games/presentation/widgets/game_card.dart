@@ -40,7 +40,9 @@ class _GameCardState extends State<GameCard> with SingleTickerProviderStateMixin
       onTapCancel: () => _animationController.reverse(),
       onTap: () {
         _animationController.reverse();
-        ExtendedNavigator.of(context).pushNamed(widget.route);
+        if(widget.route != "/") { // TODO: remove if
+          ExtendedNavigator.of(context).pushNamed(widget.route);
+        }
       },
       child: AnimatedBuilder(
         animation: _animationController,

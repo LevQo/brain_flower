@@ -2,8 +2,6 @@ import 'package:brain_flower/core/resources/colors.dart';
 import 'package:brain_flower/core/resources/drawables.dart';
 import 'package:brain_flower/core/routes/router.gr.dart';
 import 'package:brain_flower/core/utils/extensions.dart';
-import 'package:brain_flower/core/widgets/custom_app_bar.dart';
-import 'package:brain_flower/core/widgets/custom_timer.dart';
 import 'package:brain_flower/core/widgets/title_text.dart';
 import 'package:brain_flower/core/widgets/white_divider.dart';
 import 'package:brain_flower/features/games/all_games/find_object/data/models/find_object_model.dart';
@@ -15,6 +13,7 @@ import 'package:brain_flower/features/games/presentation/widgets/game_background
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// TODO: refactoring
 class FindObjectGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -47,14 +46,15 @@ class FindObjectGameScreen extends StatelessWidget {
   }
 
   Widget _buildMainContainer(BuildContext context, GeneratedObjects state) {
+    final color = context.isLightThemeMode ? CustomColors.defaultTextColor : Colors.white;
     return GameContainer(
       scores: state.scores,
       isCorrectAnswer: state.isCorrectAnswer,
       routeName: Routes.findObjectGame,
       gameContent: Positioned(
-        top: MediaQuery.of(context).size.height * 0.2,
-        right: MediaQuery.of(context).size.width * 0.01,
-        left: MediaQuery.of(context).size.width * 0.01,
+        top: context.screenHeight * 0.2,
+        right: context.screenWidth * 0.01,
+        left: context.screenWidth * 0.01,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -64,9 +64,9 @@ class FindObjectGameScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(state.typeOfSearch == FindObjectGameTypes.TEXT ? Icons.text_fields : Icons.palette,
-                    color: Colors.white, size: 20.0),
+                    color: color, size: 20.0),
                 SizedBox(width: 10.0),
-                Text('-', style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold)),
+                Text('-', style: TextStyle(color: color, fontSize: 24.0, fontWeight: FontWeight.bold)),
                 SizedBox(width: 10.0),
                 Text(
                   state.colorText,
@@ -74,7 +74,7 @@ class FindObjectGameScreen extends StatelessWidget {
                       color: state.objectToSearch.color, fontSize: 24.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(width: 4.0),
-                Icon(state.objectToSearch.icon, color: Colors.white)
+                Icon(state.objectToSearch.icon, color: color)
               ],
             ),
             SizedBox(height: 16.0),
@@ -82,8 +82,8 @@ class FindObjectGameScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Wrap(
-                runSpacing: MediaQuery.of(context).size.width * 0.05,
-                spacing: MediaQuery.of(context).size.width * 0.05,
+                runSpacing: context.screenWidth * 0.05,
+                spacing: context.screenWidth * 0.05,
                 children: _buildObjects(context, state.objects),
               ),
             )
@@ -104,7 +104,7 @@ class FindObjectGameScreen extends StatelessWidget {
             ),
         child: Icon(
           object.icon,
-          size: MediaQuery.of(context).size.width * 0.15,
+          size: context.screenWidth * 0.10,
           color: object.color,
         ),
       );

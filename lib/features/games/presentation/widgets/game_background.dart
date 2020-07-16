@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:brain_flower/core/routes/router.gr.dart';
 import 'package:brain_flower/core/widgets/custom_app_bar.dart';
+import 'package:brain_flower/core/utils/extensions.dart';
 import 'package:brain_flower/core/widgets/custom_timer.dart';
 import 'package:flutter/material.dart';
 
@@ -20,14 +21,14 @@ class GameContainer extends StatelessWidget {
       fit: StackFit.expand,
       children: <Widget>[
         Positioned(
-          right: MediaQuery.of(context).size.width * 0.07,
-          left: MediaQuery.of(context).size.width * 0.07,
-          top: MediaQuery.of(context).size.height * 0.07,
+          right: context.screenWidth * 0.07,
+          left: context.screenWidth * 0.07,
+          top: context.screenHeight * 0.07,
           child: CustomAppBar(score: scores.toString()),
         ),
         Positioned(
-          right: -MediaQuery.of(context).size.width * 0.07,
-          bottom: -MediaQuery.of(context).size.height * 0.08,
+          right: -context.screenWidth * 0.07,
+          bottom: -context.screenHeight * 0.08,
           child: CustomTimer(
             onFinish: () => ExtendedNavigator.of(context).pushNamedAndRemoveUntil(
               Routes.resultGame,

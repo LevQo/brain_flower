@@ -1,3 +1,4 @@
+import 'package:brain_flower/core/resources/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:brain_flower/core/utils/extensions.dart';
 
@@ -51,6 +52,7 @@ class MathKeyButton extends StatefulWidget {
 class _MathKeyButtonState extends State<MathKeyButton> with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation _colorTween;
+  Color _keyColor = Colors.white;
 
   @override
   void initState() {
@@ -66,8 +68,8 @@ class _MathKeyButtonState extends State<MathKeyButton> with TickerProviderStateM
 
   void _initAnimation() {
     if (widget.isCorrect) {
-      _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-      _colorTween = ColorTween(begin: Colors.green, end: Colors.white).animate(_animationController);
+      _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
+      _colorTween = ColorTween(begin: Colors.green, end: _keyColor).animate(_animationController);
       _animationController.forward();
 
       _animationController.addListener(() {
@@ -84,11 +86,11 @@ class _MathKeyButtonState extends State<MathKeyButton> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    if (context.isLightThemeMode) _keyColor = CustomColors.defaultTextColor;
     return GestureDetector(
       onTap: () => widget.onKeyTap(widget.number),
       child: ColorFiltered(
-        colorFilter:
-            ColorFilter.mode(widget.isCorrect ? _colorTween.value : Colors.white, BlendMode.modulate),
+        colorFilter: ColorFilter.mode(widget.isCorrect ? _colorTween.value : _keyColor, BlendMode.modulate),
         child: Container(
           height: context.screenWidth * 0.10,
           width: context.screenWidth * 0.14,

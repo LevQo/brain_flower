@@ -50,7 +50,7 @@ class MathMemoryGameScreen extends StatelessWidget {
     return GameContainer(
       scores: state.scores,
       isCorrectAnswer: state.isCorrectAnswer,
-      routeName: Routes.dominoesGame,
+      routeName: Routes.mathMemoryGame,
       gameContent: Positioned(
         top: context.screenHeight * 0.13,
         right: context.screenWidth * 0.01,

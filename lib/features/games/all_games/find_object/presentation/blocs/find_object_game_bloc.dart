@@ -139,7 +139,6 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
 
   Future<FindObjectModel> _generateRandomObject() async {
     var colorsSize = CustomColors.arrayColors.length;
-
     var randomColorIndex = _random.nextInt(colorsSize);
     var color = CustomColors.arrayColors[randomColorIndex];
 
@@ -164,7 +163,6 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
 
   Future<List<FindObjectModel>> _generateRandomObjects(FindObjectModel objectToSearch) async {
     var objects = <FindObjectModel>[];
-
     var countObjects = 0;
 
     if (_correctAnswerCounter < 5) {
@@ -185,7 +183,6 @@ class FindObjectGameBloc extends Bloc<FindObjectGameEvent, FindObjectGameState> 
 
     var objectToSearchPosition = _random.nextInt(countObjects);
     objects.insert(objectToSearchPosition, objectToSearch);
-
     return objects;
   }
 }
